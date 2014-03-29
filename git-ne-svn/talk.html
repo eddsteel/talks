@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>(git != svn)</title>
+<meta name="author" content="(Edd Steel)"/>
+<link rel="stylesheet" href="../reveal-template/css/reveal.min.css"/>
+<link rel="stylesheet" href="../reveal-template/css/theme/hootsuite.css" id="theme"/>
+<link rel="stylesheet" href="./override.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = '../reveal-template/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<h1>git != svn</h1>
+<h2>Edd Steel</h2>
+<h2><a href="mailto:@eddsteel">@eddsteel</a></h2>
+<h2></h2></section>
+<section>
+<section id="sec-1" >
+
+<h2>git != svn</h2>
+<aside class="notes">
+<p>
+When you learn git, you mentally map git commands to the system you know
+This is a good way to learn
+This gets frustrating after a while
+Because svn and git are so different, using git, after the honeymoon period,
+might become very frustrating.
+</p>
+
+<p>
+I found that the best way to move forwards from this was to actually
+understand how git was different, how it worked on its own terms.
+</p>
+
+<p>
+Very simple content, but hopefully everyone will have some part of their mental model of git updated.
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-2" >
+
+<h2>the git repo</h2>
+<ul class="org-ul">
+<li>It's not a table
+</li>
+<li>It's a graph (DAG)
+</li>
+<li>Changing your repo and syncing with others are distinct operations
+</li>
+</ul>
+
+
+<img src="images/repo.png" alt="repo.png" />
+
+<aside class="notes">
+<p>
+A git repo is not a list of revisions, fixing every file at a particular version.
+</p>
+
+<p>
+It's a directed tree of commits. Almost everything you do with git
+will fit into this simple model, so it's worth getting familiar with.
+</p>
+
+<p>
+git operations are generally graph operations.
+</p>
+
+<p>
+operations on your graph are generally distinct with syncing operations with other graphs.
+</p>
+
+<p>
+HEAD points to the commit you're currently working off.
+</p>
+
+<p>
+Also it's not a central database. It's a data structure that we
+share. This maps a bit closer to what it means to have a shared
+codebase.
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-3" >
+
+<h2>a git commit</h2>
+<ul class="org-ul">
+<li>It is a message, file data, metadata and reference to parent commit(s)
+</li>
+<li>These are used to create the commit's checksum.
+</li>
+</ul>
+
+<img src="images/commit.png" alt="commit.png" />
+
+<aside class="notes">
+<p>
+The SHA revision is made of all these parts (and some metadata)
+people have a commit with the same checksum, you know you have an
+identical code base. (i.e. no tampering)
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-4" >
+
+<h2>some ground rules</h2>
+<img src="images/repo.png" alt="repo.png" />
+<ul class="org-ul">
+<li>a distributed system should avoid shared, mutable state.
+</li>
+<li>append to the tree
+</li>
+<li>mutate locally
+</li>
+</ul>
+
+<aside class="notes">
+<p>
+Because we're dealing with a shared data structure, we want to avoid shared mutable state.
+Multiple appends are a lot easier to deal with the random multiple mutations
+Where we have mutations we want to keep them local, i.e. once history is shared it should be frozen
+So let's put this in more familiar terms&#x2026;
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-5"  data-state="reverse" data-background="images/riker.gif">
+
+<h2>the prime directive</h2>
+<p>
+A developer will not interfere with the git repo of others.
+</p>
+<aside class="notes">
+<p>
+And you'll find a lot of git defaults are geared towards that principle
+A lot of the time you're frustrated because git is blocking you from doing something, you're trying to break this.
+git commit and git push are totally distinct
+push that mutates shared history has to be forced
+moving a shared tag has to be forced
+more to come
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-6" >
+
+<h2>git tag</h2>
+<img src="images/tag.png" alt="tag.png" />
+
+<ul class="org-ul">
+<li>It's not a static copy of the code base
+</li>
+<li>It's a label that points at a commit
+</li>
+</ul>
+
+<aside class="notes">
+<p>
+A tag is not a static copy of a codebase at a particular
+revision. It's just a label that points to one node in the
+graph. Because of the node's properties this is sufficient.
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-7" >
+
+<h2>git branch</h2>
+<img src="images/branch.png" alt="branch.png" />
+
+<ul class="org-ul">
+<li>not an independent copy of the code base
+</li>
+<li>a label that automatically updates
+</li>
+<li>master isn't special
+</li>
+</ul>
+
+<aside class="notes">
+<p>
+A branch is not a seperate copy of the codebase that can change independently of 'master'.
+It's a label that points to a particular {}. When a change is made committed off that, the current branch moves to that commit.
+In fact master is just a branch like any other. The rest is convention. The 'weight' of a branch is really just how much you share it.
+</p>
+</aside>
+</section>
+</section>
+<section>
+<section id="sec-8" >
+
+<h2>git remote</h2>
+<img src="images/remote.png" alt="remote.png" />
+
+<ul class="org-ul">
+<li>not a master copy of the code base
+</li>
+<li>your view of a related code base (just another ref)
+</li>
+<li>pull: update my view, then integrate changes from there.
+</li>
+<li>push: update that code base with my changes (Once up to date here)
+</li>
+</ul>
+
+<aside class="notes">
+<p>
+Remotes refer to other copies of this DAG you will interact
+with. {remote}/{branch} is your view of where the branches are in
+these other repos. Push tells a remote how branches have changed. Pull
+updates your view and your local copy (fetch just updates your view)
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-9" >
+
+<h2>git merge</h2>
+<ul class="org-ul">
+<li>not a large integration of two separate code bases
+</li>
+<li>a new commit based on two or more parents
+</li>
+<li>an append operation
+</li>
+</ul>
+<aside class="notes">
+<p>
+Not about updating the repo to reflect remote changes or integrating a separate branch.
+About bringing changes from two commits together.
+They may be different branch or remote, but those are just labels.
+Conflicts are code-chunk conflicts, not file version conflicts.
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-10" >
+
+<h2>git merge</h2>
+<img src="images/merge.png" alt="merge.png" />
+
+
+
+<p>
+git merge uji/Ologn
+</p>
+</section>
+
+</section>
+<section>
+<section id="sec-11" >
+
+<h2>git merge</h2>
+<img src="images/merge2.png" alt="merge2.png" />
+
+<p>
+git merge uji/Ologn
+</p>
+</section>
+
+</section>
+<section>
+<section id="sec-12" >
+
+<h2>git rebase</h2>
+<ul class="org-ul">
+<li>Sounds scary
+</li>
+<li>a natural operation for a tree: a graft.
+</li>
+<li>useful to make history linear, avoid merges
+</li>
+</ul>
+</section>
+
+</section>
+<section>
+<section id="sec-13" >
+
+<h2>git rebase</h2>
+<p>
+<img src="images/rebase.png" alt="rebase.png" />
+git rebase master ologN
+</p>
+<aside class="notes">
+<p>
+This has no analogue in svn. It's just a graft. Take a set of commits
+off one parent, and apply them to the other.
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-14" >
+
+<h2>git rebase</h2>
+<img src="images/rebase2.png" alt="rebase2.png" />
+</section>
+</section>
+<section>
+<section id="sec-15" >
+
+<h2>git rebase</h2>
+<img src="images/riker.gif" alt="riker.gif" />
+<aside class="notes">
+<p>
+Mutating operation!
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-16" >
+
+<h2>git rebase</h2>
+<ul class="org-ul">
+<li>Potentially destructive
+</li>
+<li>use it on local commits only
+</li>
+<li>pull &#x2013;rebase is almost always fine.
+</li>
+</ul>
+<aside class="notes">
+<p>
+The only reason it's
+sometimes considered dangerous is that it's a mutating operation.
+i.e. obey the prime directive.
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-17" >
+
+<h2>git revert</h2>
+<img src="images/badrevert.png" alt="badrevert.png" />
+
+<p>
+git revert a0fb
+</p>
+<aside class="notes">
+<p>
+Revert. Easy right? Remove a commit and change its descendant to point to its parent.
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-18" >
+
+<h2>git revert</h2>
+<ul class="org-ul">
+<li>doesn't change the named commit
+</li>
+<li><b>appends</b> a new commit that reverses the change
+</li>
+</ul>
+<img src="images/revert.png" alt="revert.png" />
+
+<p>
+git revert a0fb
+</p>
+
+<aside class="notes">
+<p>
+No! This would be an incredibly dangerous thing to allow (it is possible but takes many operations)
+Revert does not mutate the tree. It appends a new commit that has the effect of reversing that change. Welcome to distributed systems.
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-19" >
+
+<h2>git checkout/git reset</h2>
+<aside class="notes">
+<p>
+You've probably seen these when trying to undo work. Why are there two commands? Git is stupid.
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-20" >
+
+<h2>git checkout</h2>
+<img src="images/line.png" alt="line.png" />
+
+<ul class="org-ul">
+<li>just moves HEAD to the commit or ref
+</li>
+<li>(with no arg, drops changes)
+</li>
+</ul>
+
+<p>
+<img src="images/checkout.png" alt="checkout.png" />
+git checkout HEAD^
+</p>
+</section>
+</section>
+<section>
+<section id="sec-21" >
+
+<h2>git reset</h2>
+<img src="images/line.png" alt="line.png" />
+<ul class="org-ul">
+<li>moves our branch label (commit is still there, but not referenced)
+</li>
+<li>(with no arg, unstages changes)
+</li>
+<li>can leave work-in-progress unaffected or affected
+</li>
+</ul>
+<img src="images/reset.png" alt="reset.png" />
+
+<p>
+git reset HEAD^
+</p>
+
+<aside class="notes">
+<p>
+reset moves our branch label back. The commit is still there, it's just not pointed at any more. with no arg, drops staged
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-22" >
+
+<h2>Neat stuff to google</h2>
+<ul class="org-ul">
+<li>git for computer scientists (if this wasn't technical enough)
+</li>
+<li>the index (why add and commit are distinct)
+</li>
+<li>add &#x2013;patch/ reset &#x2013;patch
+</li>
+<li>rebase &#x2013;interactive
+</li>
+<li>bisect
+</li>
+<li>commit &#x2013;amend &#x2013;reuse-message=HEAD
+</li>
+<li>reset &#x2013;hard/&#x2013;soft
+</li>
+<li>log's many options
+</li>
+<li>insteadOf config option
+</li>
+<li>cherry-pick
+</li>
+</ul>
+<aside class="notes">
+<p>
+Not claiming there's nothing to it, but a cleaner mental model makes this stuff easier to handle
+</p>
+</aside>
+</section>
+
+</section>
+<section>
+<section id="sec-23"  data-state="reverse">
+
+<h2>Questions?</h2>
+</section>
+</section>
+</div>
+</div>
+<script src="../reveal-template/lib/js/head.min.js"></script>
+<script src="../reveal-template/js/reveal.min.js"></script>
+<script>
+
+        		// Full list of configuration options available here:
+        		// https://github.com/hakimel/reveal.js#configuration
+        		Reveal.initialize({
+        			controls: true,
+        			progress: true,
+        			history: false,
+        			center: true,
+                                slideNumber: true,
+        			rollingLinks: false,
+        			keyboard: true,
+        			overview: true,
+        			 // slide width
+        			 // slide height
+        			 // slide margin
+        			 // slide minimum scaling factor
+        			 // slide maximum scaling factor
+
+
+        			theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        			transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+        			transitionSpeed: 'default',
+
+        			// Optional libraries used to extend on reveal.js
+        			dependencies: [
+        				{ src: '../reveal-template/lib/js/classList.js', condition: function() { return !document.body.classList; } }
+        				,{ src: '../reveal-template/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }
+        				,{ src: '../reveal-template/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }
+        				,{ src: '../reveal-template/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        				,{ src: '../reveal-template/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }
+        				,{ src: '../reveal-template/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        				// { src: '../reveal-template/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+        				// { src: '../reveal-template/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+         				
+        			]
+        		});
+</script>
+</body>
+</html>

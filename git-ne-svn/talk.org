@@ -1,0 +1,613 @@
+#+Title: git != svn
+#+Author: Edd Steel
+#+Email: @eddsteel
+#+REVEAL_ROOT: ../reveal-template
+#+REVEAL_THEME: hootsuite
+#+REVEAL_TRANS: linear
+#+OPTIONS: num:nil toc:nil reveal_center:t :-
+#+REVEAL_EXTRA_CSS: ./override.css
+#
+# Requires emacs, org-mode, org-reveal (with hootsuite template) and graphviz-dot-mode
+# oh and http://gifatron.com/wp-content/uploads/2013/05/sGx39yA.gif
+#
+* git != svn
+#+BEGIN_NOTES
+When you learn git, you mentally map git commands to the system you know
+This is a good way to learn
+This gets frustrating after a while
+Because svn and git are so different, using git, after the honeymoon period,
+might become very frustrating.
+
+I found that the best way to move forwards from this was to actually
+understand how git was different, how it worked on its own terms.
+
+Very simple content, but hopefully everyone will have some part of their mental model of git updated.
+#+END_NOTES
+* the git repo
+
+- It's not a table
+- It's a graph (DAG)
+- Changing your repo and syncing with others are distinct operations
+
+
+#+BEGIN_SRC dot :file images/repo.png
+  #   *\*-*/*-*
+  #     *-*   H
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     HEAD [shape=plaintext]
+     { rank=same "a0fb" "b1cd" }
+     { rank=same "01ab" "72ef" }
+     { rank=same "9a82" HEAD }
+     
+     "9a82" -> "7f99" -> "a0fb" -> "01ab" -> "67bc"
+     "7f99" -> "b1cd" -> "72ef" -> "67bc" [constraint=false]
+     "9a82" -> HEAD [dir=none]
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/repo.png]]
+
+#+BEGIN_NOTES
+A git repo is not a list of revisions, fixing every file at a particular version.
+
+It's a directed tree of commits. Almost everything you do with git
+will fit into this simple model, so it's worth getting familiar with.
+
+git operations are generally graph operations.
+
+operations on your graph are generally distinct with syncing operations with other graphs.
+
+HEAD points to the commit you're currently working off.
+
+Also it's not a central database. It's a data structure that we
+share. This maps a bit closer to what it means to have a shared
+codebase.
+
+#+END_NOTES
+* a git commit
+
+- It is a message, file data, metadata and reference to parent commit(s)
+- These are used to create the commit's checksum.
+
+#+BEGIN_SRC dot :file images/commit.png
+  #   -*
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", width=1, fontsize=12]
+     invisible [ shape=plaintext, label="", width=0 ]
+     
+     "9a82" -> invisible
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/commit.png]]
+
+#+BEGIN_NOTES
+The SHA revision is made of all these parts (and some metadata)
+people have a commit with the same checksum, you know you have an
+identical code base. (i.e. no tampering)
+#+END_NOTES
+* some ground rules
+file:images/repo.png
+- a distributed system should avoid shared, mutable state.
+- append to the tree
+- mutate locally
+
+#+BEGIN_NOTES
+Because we're dealing with a shared data structure, we want to avoid shared mutable state.
+Multiple appends are a lot easier to deal with the random multiple mutations
+Where we have mutations we want to keep them local, i.e. once history is shared it should be frozen
+So let's put this in more familiar terms...
+#+END_NOTES
+* the prime directive
+  :PROPERTIES:
+  :reveal_data_state: reverse
+  :reveal_background: images/riker.gif
+  :END:
+A developer will not interfere with the git repo of others.
+#+BEGIN_NOTES
+And you'll find a lot of git defaults are geared towards that principle
+A lot of the time you're frustrated because git is blocking you from doing something, you're trying to break this.
+git commit and git push are totally distinct
+push that mutates shared history has to be forced
+moving a shared tag has to be forced
+more to come
+#+END_NOTES
+* git tag
+#+BEGIN_SRC dot :file images/tag.png
+  #         T 
+  #   *\*-*/*-*
+  #     *-*   H
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same "a0fb" "b1cd" }
+     { rank=same "01ab" "72ef" }
+     
+     "9a82" -> "7f99" -> "a0fb" -> "01ab" -> "67bc"
+     "7f99" -> "b1cd" -> "72ef" -> "67bc" [constraint=false]
+     
+     HEAD [shape=plaintext]
+     edge [dir=none]
+
+     { rank=same "9a82" HEAD }
+     "9a82" -> HEAD [dir=none]
+
+     node [shape=box, style=filled, fillcolor=lightyellow]
+     { rank=same "7f99" "v0.2" }
+     "v0.2" -> "7f99"
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/tag.png]]
+
+- It's not a static copy of the code base
+- It's a label that points at a commit
+
+#+BEGIN_NOTES
+A tag is not a static copy of a codebase at a particular
+revision. It's just a label that points to one node in the
+graph. Because of the node's properties this is sufficient.
+#+END_NOTES
+* git branch
+#+BEGIN_SRC dot :file images/branch.png
+  #         T B
+  #   *\*-*/*-*
+  #     *-*   H
+  #       B
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same "a0fb" "b1cd" "v0.2-dev" }
+     { rank=same "01ab" "72ef" }
+     
+     "9a82" -> "7f99" -> "a0fb" -> "01ab" -> "67bc"
+     "7f99" -> "b1cd" -> "72ef" -> "67bc" [constraint=false]
+     
+     HEAD [shape=plaintext]
+     master [shape=box, style=filled, fillcolor=lightblue]
+     "v0.2-dev" [shape=box, style=filled, fillcolor=lightblue]
+     edge [dir=none]
+
+     { rank=same "9a82" HEAD master }
+     "9a82" -> HEAD
+     master -> "9a82"
+     "b1cd" -> "v0.2-dev"
+     
+     node [shape=box, style=filled, fillcolor=lightyellow]
+     { rank=same "7f99" "v0.2" }
+     "v0.2" -> "7f99"
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/branch.png]]
+
+- not an independent copy of the code base
+- a label that automatically updates
+- master isn't special
+
+#+BEGIN_NOTES
+A branch is not a seperate copy of the codebase that can change independently of 'master'.
+It's a label that points to a particular {}. When a change is made committed off that, the current branch moves to that commit.
+In fact master is just a branch like any other. The rest is convention. The 'weight' of a branch is really just how much you share it.
+#+END_NOTES
+
+* git remote
+
+#+BEGIN_SRC dot :file images/remote.png
+  #         T B
+  #   *\*-*/*-*
+  #     *-* R H
+  #       B
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same "a0fb" "b1cd" "v0.2-dev" }
+     { rank=same "01ab" "72ef" }
+     
+     "9a82" -> "7f99" -> "a0fb" -> "01ab" -> "67bc"
+     "7f99" -> "b1cd" -> "72ef" -> "67bc" [constraint=false]
+     
+     HEAD [shape=plaintext]
+     master [shape=box, style=filled, fillcolor=lightblue]
+     "v0.2-dev" [shape=box, style=filled, fillcolor=lightblue]
+     "origin/master" [shape=box, style=filled, fillcolor=pink]
+     edge [dir=none]
+
+     { rank=same "9a82" HEAD master }
+     "9a82" -> HEAD
+     master -> "9a82"
+     "b1cd" -> "v0.2-dev"
+     
+     node [shape=box, style=filled, fillcolor=lightyellow]
+     { rank=same "7f99" "v0.2" "origin/master" }
+     "v0.2" -> "7f99"
+     "7f99" -> "origin/master"
+  }
+#+END_SRC
+
+- not a master copy of the code base
+- your view of a related code base (just another ref)
+- pull: update my view, then integrate changes from there.
+- push: update that code base with my changes (Once up to date here)
+
+#+BEGIN_NOTES
+Remotes refer to other copies of this DAG you will interact
+with. {remote}/{branch} is your view of where the branches are in
+these other repos. Push tells a remote how branches have changed. Pull
+updates your view and your local copy (fetch just updates your view)
+#+END_NOTES
+* git merge
+- not a large integration of two separate code bases
+- a new commit based on two or more parents
+- an append operation
+#+BEGIN_NOTES
+Not about updating the repo to reflect remote changes or integrating a separate branch.
+About bringing changes from two commits together.
+They may be different branch or remote, but those are just labels.
+Conflicts are code-chunk conflicts, not file version conflicts.
+#+END_NOTES
+* git merge
+#+BEGIN_SRC dot :file images/merge.png
+  #     H H' 
+  #   *|*|*
+  #    \M/M'
+  #     *
+  #     B
+  # 
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same HEAD "68af" master "61cc" "uji/Ologn" }
+     { rank=same "HEAD'" "8829" "master'" }
+     "8829" [color=lightgrey]
+     
+     "8829" -> "68af" [color=lightgrey]
+     "68af" -> "020a"
+     "8829" -> "61cc" [constraint=false, color=lightgrey]
+     "61cc" -> "020a" [constraint=false]
+
+     HEAD [shape=plaintext]
+     "HEAD'" [shape=plaintext]
+     master [shape=box, style=filled, fillcolor="lightblue"]
+     "master'" [shape=plaintext, style=filled]
+     "uji/Ologn" [shape=box, style=filled, fillcolor=pink]
+
+     edge [dir=none]
+     "8829" -> "HEAD'" [style=invisible]
+     "68af" -> "HEAD" [style=invisible]
+     "master" -> "68af"
+     "master'" -> "8829" [color=lightgrey]
+     "61cc" -> "uji/Ologn"
+     "HEAD" -> "61cc" [style=invisible]
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/merge.png]]
+
+
+
+git merge uji/Ologn
+* git merge
+#+BEGIN_SRC dot :file images/merge2.png
+  #       H
+  #   *|*|*
+  #    \ /M
+  #     *
+  #     B
+  # 
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same HEADo "68af"  "61cc" "uji/Ologn" }
+     { rank=same HEAD "8829" master }
+     
+     "8829" -> "68af" 
+     "68af" -> "020a"
+     "8829" -> "61cc" [constraint=false]
+     "61cc" -> "020a" [constraint=false]
+
+     HEAD [shape=plaintext]
+     "HEADo" [shape=plaintext, style=invisible]
+     master [shape=box, style=filled, fillcolor="lightblue"]
+     "uji/Ologn" [shape=box, style=filled, fillcolor=pink]
+
+     edge [dir=none]
+     "8829" -> "HEAD" [style=invisible]
+     "68af" -> "HEADo" [style=invisible]
+     "master" -> "8829"
+     "61cc" -> "uji/Ologn"
+     "HEADo" -> "61cc" [style=invisible]
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/merge2.png]]
+
+git merge uji/Ologn
+* git rebase
+- Sounds scary
+- a natural operation for a tree: a graft.
+- useful to make history linear, avoid merges
+* git rebase
+#+BEGIN_SRC dot :file images/rebase.png
+  #     H H' 
+  #   *\*\
+  #     * *
+  #     B B'
+  # 
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same HEAD "68af" Ologn "61cc" master }
+     { rank=same "HEAD'" "72dd" "Ologn'" }
+     "72dd" [color=lightgray]
+     "61cc" [style=dashed]
+     
+     "68af" -> "020a"
+     "61cc" -> "020a" [constraint=false, style=dashed]
+     "72dd" -> "68af" [constraint=false, color=lightgray]
+
+     "72dd" -> "61cc" [style=invisible, dir=none]
+
+     HEAD [shape=plaintext]
+     "HEAD'" [shape=plaintext]
+
+     "Ologn'" [shape=plaintext, style=filled]
+     "Ologn" [shape=box, style=filled, fillcolor=lightblue, style=dashed]
+     master [shape=box, style=filled, fillcolor=lightblue]
+
+     edge [dir=none]
+     Ologn -> "61cc" [style=dashed]
+     "Ologn'" -> "72dd"
+     master -> "68af"
+
+     "61cc" -> "HEAD" [style=dashed]
+     "72dd" -> "HEAD'"
+
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/rebase.png]]
+git rebase master ologN
+#+BEGIN_NOTES
+This has no analogue in svn. It's just a graft. Take a set of commits
+off one parent, and apply them to the other.
+#+END_NOTES
+* git rebase
+#+BEGIN_SRC dot :file images/rebase2.png
+  #       H 
+  #   *\*\
+  #     * *
+  #       B
+  # 
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same HEADo "68af" Ologno "61cc" master }
+     { rank=same "HEAD" "72dd" "Ologn" }
+     "61cc" [style=invisible]
+     
+     "68af" -> "020a"
+     "61cc" -> "020a" [constraint=false, style=invisible, dir=none]
+     "72dd" -> "68af" [constraint=false]
+
+     "72dd" -> "61cc" [style=invisible, dir=none]
+
+     HEADo [shape=plaintext, style=invisible]
+     "HEAD" [shape=plaintext]
+
+     "Ologn" [shape=plaintext, style=filled, fillcolor=lightblue]
+     "Ologno" [shape=box, style=invisible]
+     master [shape=box, style=filled, fillcolor=lightblue]
+
+     edge [dir=none]
+     Ologno -> "61cc" [style=invisible]
+     "Ologn" -> "72dd"
+     master -> "68af"
+
+     "61cc" -> "HEADo" [style=invisible]
+     "72dd" -> "HEAD"
+
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/rebase2.png]]
+
+* git rebase
+file:images/riker.gif
+#+BEGIN_NOTES
+Mutating operation!
+#+END_NOTES
+* git rebase
+- Potentially destructive
+- use it on local commits only
+- pull --rebase is almost always fine.
+#+BEGIN_NOTES
+The only reason it's
+sometimes considered dangerous is that it's a mutating operation.
+i.e. obey the prime directive.
+#+END_NOTES
+* git revert
+#+BEGIN_SRC dot :file images/badrevert.png
+  #             M
+  #   *-*(-*)-*-*
+  #             H
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same "9a82" HEAD master }
+     
+     "a0fb" [style=dashed]
+     "9a82" -> "7f99" 
+     "7f99" -> "a0fb" [style=dashed, weight=10]
+     "a0fb" -> "01ab" [style=dashed, weight=10]
+     "01ab" -> "67bc"
+     "7f99" -> "01ab" [color=lightgray, weight=1]
+     
+     HEAD [shape=plaintext]
+     master [shape=box style=filled fillcolor=lightblue]
+     edge [dir=none]
+
+     "9a82" -> HEAD
+     "master" -> "9a82"
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/badrevert.png]]
+
+git revert a0fb
+#+BEGIN_NOTES
+Revert. Easy right? Remove a commit and change its descendant to point to its parent.
+#+END_NOTES
+* git revert
+- doesn't change the named commit
+- *appends* a new commit that reverses the change
+#+BEGIN_SRC dot :file images/revert.png
+  #             M
+  #   *-*-*-*-*-*
+  #             H
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same "1337" HEAD master }
+     
+     "1337" -> "9a82" -> "7f99" -> "a0fb" -> "01ab" -> "67bc"
+     
+     HEAD [shape=plaintext]
+     master [shape=box style=filled fillcolor=lightblue]
+     edge [dir=none]
+
+     "1337" -> HEAD
+     "master" -> "1337"
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/revert.png]]
+
+git revert a0fb
+
+#+BEGIN_NOTES
+No! This would be an incredibly dangerous thing to allow (it is possible but takes many operations)
+Revert does not mutate the tree. It appends a new commit that has the effect of reversing that change. Welcome to distributed systems.
+#+END_NOTES
+* git checkout/git reset
+#+BEGIN_NOTES
+You've probably seen these when trying to undo work. Why are there two commands? Git is stupid.
+#+END_NOTES
+* git checkout
+#+BEGIN_SRC dot :file images/line.png
+  #           M
+  #   *-*-*-*-*
+  #           H
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same "9a82" HEAD master }
+     
+     "9a82" -> "7f99" -> "a0fb" -> "01ab" -> "67bc"
+     
+     HEAD [shape=plaintext]
+     master [shape=box style=filled fillcolor=lightblue]
+     edge [dir=none]
+
+     "9a82" -> HEAD
+     "master" -> "9a82"
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/line.png]]
+
+- just moves HEAD to the commit or ref
+- (with no arg, drops changes)
+
+#+BEGIN_SRC dot :file images/checkout.png
+  #           M
+  #   *-*-*-*-*
+  #         H
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same "9a82" master }
+     { rank=same "7f99" HEAD }
+     
+     "9a82" -> "7f99" -> "a0fb" -> "01ab" -> "67bc"
+     
+     HEAD [shape=plaintext]
+     master [shape=box style=filled fillcolor=lightblue]
+     edge [dir=none]
+
+     "7f99" -> HEAD
+     "master" -> "9a82"
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/checkout.png]]
+git checkout HEAD^
+
+* git reset
+file:images/line.png
+- moves our branch label (commit is still there, but not referenced)
+- (with no arg, unstages changes)
+- can leave work-in-progress unaffected or affected
+#+BEGIN_SRC dot :file images/reset.png
+  #         M
+  #   *-*-*-*-*
+  #         H
+  digraph {
+     rankdir=RL
+     node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+     { rank=same "7f99" HEAD master }
+     "9a82" [style=invisible]
+     
+     "9a82" -> "7f99" [style=invisible dir=none]
+     "7f99"-> "a0fb" -> "01ab" -> "67bc"
+     
+     HEAD [shape=plaintext]
+     master [shape=box style=filled fillcolor=lightblue]
+     edge [dir=none]
+
+     "7f99" -> HEAD
+     "master" -> "7f99"
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:images/reset.png]]
+
+git reset HEAD^
+
+#+BEGIN_NOTES
+reset moves our branch label back. The commit is still there, it's just not pointed at any more. with no arg, drops staged
+#+END_NOTES
+* Neat stuff to google
+- git for computer scientists (if this wasn't technical enough)
+- the index (why add and commit are distinct)
+- add --patch/ reset --patch
+- rebase --interactive
+- bisect
+- commit --amend --reuse-message=HEAD
+- reset --hard/--soft
+- log's many options
+- insteadOf config option
+- cherry-pick
+#+BEGIN_NOTES
+Not claiming there's nothing to it, but a cleaner mental model makes this stuff easier to handle
+#+END_NOTES
+* Questions?
+:PROPERTIES:
+:reveal_data_state: reverse
+:END:
