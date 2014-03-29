@@ -1,0 +1,438 @@
+#+Title: Debugging from the outside → in
+#+Author: Edd Steel
+#+Email: @eddsteel
+#+REVEAL_ROOT: ../reveal-template
+#+REVEAL_THEME: hootsuite
+#+REVEAL_TRANS: linear
+#+OPTIONS: num:nil toc:nil reveal_center:t :-
+#+REVEAL_EXTRA_CSS: ./override.css
+#
+# Requires emacs, org-mode, org-reveal (with hootsuite template) and graphviz-dot-mode
+#
+# Released under terms of Creative Commons Attribution-ShareAlike 4.0 International
+# [[http://creativecommons.org/licenses/by-sa/4.0/]]
+#
+#
+* SOA at HootSuite
+- LAMP → SOA
+- Lots of new Scala code
+- Lots of new Akka code
+- Production-ready means something
+- (we're hiring!)
+#+BEGIN_NOTES
+At HootSuite at the moment we are in the middle of converting existing
+LAMP backend systems to services. That means we're creating new Akka
+systems, and those systems have to be ready to take over a serious
+amount of work from day 1. i.e. they have to work.
+#+END_NOTES
+* OH at the reactive meetup
+#+REVEAL_HTML: <div class="quote-container">
+#+REVEAL_HTML:   <img src="images/tavis.jpeg" class="tavis-avi" alt="TR said"/>
+#+BEGIN_QUOTE 
+   What sucks about this stuff?
+#+END_QUOTE
+#+REVEAL_HTML:   <br />
+#+REVEAL_HTML:   <img src="images/james.jpeg" class="james-avi" alt="JW said"/>
+#+BEGIN_QUOTE
+  The tooling isn't there yet.
+#+END_QUOTE
+#+REVEAL_HTML: </div>
+  - IDE support 
+  - profiling, debugging
+  - distributed systems are hard.
+#+BEGIN_NOTES
+James Ward gave a recent talk about the typesafe stack and admitted,
+in response to Tavis's question, that the tooling was lacking. IDE
+stuff I'm pretty indifferent about but the second and third points
+were very relevant. How, then do you answer the question: "Does it
+work?"
+#+END_NOTES
+* Does it work?
+** Does it work?
+- Compiler
+- Static Analysis
+- Unit Testing
+- Property Testing
+- Integration Testing
+#+BEGIN_NOTES
+Scala compiler does a lot for you (and combines well with IDEs, ensime
+etc.), and the type system will find bugs for you. So will
+nalysis. So will unit testing.  Akka has a great testing story with
+kka-test and we combine this with vagrant to do integration
+esting. Property testing is often able to give you more comprehensive
+overage.
+#+END_NOTES
+* OK, But does it work?
+** Test the whole system
+- Load testing
+- Profiling
+- Typesafe Console
+- Log analysis
+#+BEGIN_NOTES
+So you probably want to test the system as a whole. Load testing will
+bring some interesting issues to light. You can attach your system to
+various debugging and profiling tools too and look inside it. What you
+see is on the level of the JVM which is not the level you are coding
+at, and it often requires use of jvm agents The Akka console is a
+particularly slick example of this, but calls various deprecated or
+unsafe APIs to achieve it. You can sift through your logs too, which
+may hide some secrets. How many logs are you willing to look at?
+Have to admit, not my favourite part of dev, prefer to be face down in
+code. But you can't ignore this stuff.
+#+END_NOTES
+
+* Problem 1
+** tool's view != dev's view
+- Actors and Futures not threads
+  - =ActorSystem-akka.actor.worker-dispatcher-3=
+- Message-passing components and anonymous functions
+  - =Module$InnerModule$Foo$$anonfun$bar$1$$anonfun$apply$1.apply(<console>:10)=
+- Once our system is made to work with the tools, is it still the same system?
+#+BEGIN_NOTES
+
+#+END_NOTES
+* Problem 2
+** This isn't very agile.
+Dev → Vagrant → Staging → Load Testing → Production
+
+#+BEGIN_NOTES
+#+END_NOTES
+* Problem 3
+** 
+[[file:images/worked-in-dev.png]]
+
+- SOA pushes system integration to deploy time.
+- It's still your problem.
+
+#+BEGIN_NOTES
+When writing services, we're pushing system integration out of the traditional dev role, and into the ops role
+but we're still responsible for our systems.
+#+END_NOTES
+* Plugging the gaps
+** We need a tool that will
+- work in production, without impacting performance
+- provide a central view of a distributed system
+- Organise information flexibly
+- Tell us, at a minimum
+  - Did X happen and where?
+  - How often?
+  - How long did it take?
+  - What was the impact?
+  - =???=
+
+#+BEGIN_NOTES
+Say you had a problem with requests timing out. You'd want to know if a timeout happened, how often etc.
+and then we work out why
+
+We need to see if and when a particular event happened.
+If we have an event associated with a particular server or actor or user we need to be able to slice by those associations
+We need timing measured, and timing distributions.
+We need to see, of a given total total time, how that sliced between its parts
+We need series of data with hierarchical labels, so we can combine and split them
+We need to aggregate, combine, calculate mean, max, etc
+We need low overhead. So we want something like UDP so individual calls are minimally disruptive, and sampling so call count is limited
+#+END_NOTES
+** MVP
+[[file:images/multitool.png]]
+
+
+#+BEGIN_NOTES
+What's our MVP for this problem?
+If you're Macgyver, and you have to disarm a bomb, a paperclip is your MVP
+#+END_NOTES
+
+* Monitoring utilities?
+- Requirements sound like characteristics of our monitoring utilities
+- 3 flavours
+  - Alerts
+  - Graphs
+  - Aggregated logs
+
+#+BEGIN_NOTES
+
+#+END_NOTES
+* Graphs 
+** Killer App: tracking metrics
+- Build dashboards that show key system metrics
+  - execution time
+  - request count
+  - coffee supply
+- See impact of code changes
+- Monitor outages, early warnings
+
+** Graph stack
+- statsd-client/ diamond
+- statsd
+- graphite
+- graphite dashboards
+
+#+BEGIN_NOTES
+There are lots of competing products in the space. Can blame historical reasons for our particular choices, and the fact they were already available for monitoring purposes.
+#+END_NOTES
+** Statsd/Graphite Features
+- UDP and sampling from multiple sources
+- counters, gauges, timing (mean/ 90^th percentile/ 99^th percentile)
+- hierarchical data series
+  - ={system}.{host}.{actor}.{function}.time=
+- aggregation, combination, calculation
+
+* Log aggregators
+
+** Killer app - logging exceptions
+- Post mortems
+- User tracing across systems
+- rare, obscure bugs
+- edge cases and exotic browser/OS/device combinations
+- generate test data
+
+** Log stack
+- udp-logger
+- logstash
+- elastic search
+- kibana
+- hadoop
+
+#+BEGIN_NOTES
+Elastic Search: Easy instant (simple) data mining
+Logstash: Easy shunting of log entries (e.g. into elastic search)
+Kibana: front-end to ES's REST API.
+#+END_NOTES
+
+** Elastic Search features
+- UDP support from multiple sources
+- schemaless, structured messages + search
+- map/reduce batch jobs
+
+* So, monitoring utilities?
+
+- both work in production, without impacting performance
+- provide a central view of a distributed system
+- organise information flexibly
+#+REVEAL: split
+- Graphing X shows
+  - if it happened
+  - where (if that's in the key)
+  - how long it took
+  - how the system looked at the same time.
+#+REVEAL: split
+- Logging X shows
+  - if it happened
+  - where (if it's part of the message)
+  - the context  
+  - trends around X (kibana or hadoop)
+
+#+BEGIN_NOTES
+We need to gather all our disparate logs together
+  to follow user across systems
+  to look for correlation and patterns 
+We need to be be able to index and filter, but put pretty much anything in
+We need some support for data-mining e.g. for BI, marketing
+It would be nice to loop some of this intelligence back into the application
+
+#+END_NOTES
+
+* Graph Example I
+** Our System
+#+BEGIN_SRC dot :file images/system.png
+#
+# S -->---R
+# S /     B
+#         |\ \
+#         W W W
+#        / / /
+# S --<------
+# S /
+
+digraph {
+  node [shape=circle, fontname="Helvetica", fixedsize=true, width=1, fontsize=12]
+  { rank=same Socket1 Receiver Puller}
+  { rank=same Worker2 Worker3 Worker1 Invisible1}
+  { rank=same Socket2 Pusher }
+
+  Invisible1 [style=invis]
+
+  Socket1 [label="Reqs In" fontsize=10 width=0.8 shape=none]
+  Socket2 [label="Reps Out" fontsize=10 width=0.8 shape=none]
+  
+  Socket1 -> Puller [weight=50]
+  Socket1 -> Puller [weight=50]
+  Puller -> Receiver
+  Receiver -> Router
+  Router -> Worker1
+  Router -> Worker2
+  Router -> Worker3
+  Worker1 -> Pusher [constraint=false]
+  Worker2 -> Pusher [constraint=false]
+  Worker3 -> Pusher [constraint=false]
+  Pusher -> Socket2 [constraint=false weight=50]
+  Pusher -> Socket2 [constraint=false weight=50]
+
+  edge [dir=none style=invis]
+
+  Socket1 -> Socket2
+  Puller -> Invisible1
+  Invisible1 -> Pusher
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:images/system.png]]
+
+** The Metric: Execution time
+- System was underperforming with low load
+- Performance improved when we increased load
+- Testing showed no issue with receiving across two sockets
+- Requests In matched Responses Out
+#+REVEAL: split
+[[file:images/timing-and-traffic.png]]
+** A Clue
+file:images/pipeline.png
+puller to receiver slice is large
+** A Clue
+[[file:images/timing.png]]
+minimum time, at low load was about the same as socket timeout
+** The Hypothesis
+- waiting for both sockets to have requests, instead of reading and processing off whichever had work.
+- big improvement in clarity
+  - +some part of the system is causing delays+
+  - there's a bug in our polling code
+#+BEGIN_NOTES
+Lesson really is that applying the process turned a general big problem into a very specific one which we could find and solve.
+#+END_NOTES
+* Log Example I
+service client logs how many service calls are made in a web request
+#+REVEAL: split
+[[file:images/log analysis.png]]
+#+REVEAL: split 
+[[file:images/log detail.png]]
+#+BEGIN_NOTES
+First 2 covered by statsd
+last is real power. Can look at the precise situation, not just patterns and correlations.
+#+END_NOTES
+* A process emerges
+** Our "process"
+- Identify a metric (or add one)
+- Find a clue
+- Form a hypothesis
+- Fix and watch the metric change (else repeat)
+
+* Graph Example II
+** Example 1: The Metric
+- request timeouts increased when load increased
+- sudden change
+- cause unclear 
+#+REVEAL: split
+[[file:images/dr-sudden-timeouts-gradual-load.png]]
+** A Clue
+[[file:images/dr-batch-size-with-timeouts.png]]
+  size of request batches correlated, increased
+** A Clue
+[[file:images/dr-receiver-worker-slice.png]]
+problem when upper time b/w puller and worker == request timeout
+** Hypothesis 
+  - bug: no cap on request batch size
+  - first requests in batch timed out before the batch was sent.
+* Log Example II
+- DB replication during rollout
+- PHP and scala systems, old and new DBs, tungsten replicator to sync them
+- Soft-launch
+   - percentage use new then old (and skip replication)
+   - rest use just old (and replicate)
+#+REVEAL: split
+
+[[file:images/replication.png]]
+
+Progress of an update through old and new systems
+
+#+BEGIN_NOTES
+
+#+END_NOTES
+* The kinds of questions we've been asking and answering
+** 
+- what's my workload distribution like?
+- what's the best number of workers for this traffic level?
+- which part of our pipeline is the bottleneck?
+- did my config change have the desired effect?
+#+REVEAL: split
+[[file:images/consistenthashing.png]]
+#+REVEAL: split
+- are my actors keeping up with their work?
+- are those lost messages due to a bug or poor performance?
+- are my assumptions correct? Does /x/ affect /y/?
+- did the last two weeks of work actually make things better?
+#+BEGIN_NOTES
+Graph of request count and timing per worker per host. Graph slices. Found some workers were never used at all
+e.g. router type -- tiny config change, drastic effect on distribution
+correlate current values with a time lag.
+correlate the graphs of producers sending with consumers consuming. Is there a lag? When you stop producers how much does consumer level change?
+to fix: more workers? Dispatcher config? Try it and look at the graphs.
+does that part of the pipeline show long times, or is the count simply lower?
+in general many assumptions can be tested by lining up graphs and looking for correlations.
+#+END_NOTES
+** Not to mention
+- Is twitter down?
+- Did someone redeploy?
+- Is instance 2 amazony today?
+#+BEGIN_NOTES
+Did the graph hit a cliff? Or gradually reduce?
+Line on graph
+Erratic system stats w/o correlation to app stats.
+#+END_NOTES
+* Guidelines
+** The regular rules apply
+- don't fix what you haven't measured
+- don't prematurely optimise
+- test your assumptions
+- remove noise
+** Organising metrics
+- record fine-grained, then aggregate
+[[file:images/slices.png]]
+- =requests.*.endpoint1= / =requests.host1.*=
+#+BEGIN_NOTES
+take full advantage of graphite and put every variable in the stat key
+if you're recording on multiple hosts, put that in the key. If multiple workers, put that in the key
+#+END_NOTES
+** Misc.
+- sample if necessary.
+- system stats are useful
+- combine graphs to demonstrate correlation
+- graph significant external events
+- graph history
+#+REVEAL: split
+[[file:images/events.png]]
+
+* What sucks about this stuff?
+- It's a paperclip
+- The graphite UI can suck
+- UDP can suck
+[[file:images/udpsucks.png]]
+#+BEGIN_NOTES
+Sometimes you just want a text format to define your graphs.
+UDP has no guarantees.
+#+END_NOTES
+* udp-logger is open source (Apache)
+- [[https://github.com/hootsuite/udp-logger]]
+- Back end for log4j and slf4j
+- Built in DNS SRV record support for discovery of logstash
+- You'll still need to format your messages usefully.
+- typesafe config
+* statsd-client is open source (Apache)
+- [[https://github.com/hootsuite/statsd-client]]
+- Wrapper for etsy's statsd client
+- More idiomatic/ lower-profile
+- typesafe config
+#+BEGIN_SRC scala
+   val callParent = monsters exists { m =>
+      timed(s"monster-check.${checker}.$m") {
+        checkUnderTheBed(m)
+      }
+   }
+#+END_SRC
+* Thanks!
+:PROPERTIES:
+:reveal_data_state: reverse
+:END:
+- Edd Steel
+- =@eddsteel=
+- =code.hootsuite.com=
+- =github.com/hootsuite=
