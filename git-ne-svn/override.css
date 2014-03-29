@@ -1,0 +1,10 @@
+img {
+    display: block;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+}
+
+.slide-background {
+	background-position: 50% 50% !important;
+	background-size: 100% !important;
+}
