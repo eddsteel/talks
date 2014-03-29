@@ -286,7 +286,7 @@ digraph {
 #+REVEAL: split
 [[file:images/timing-and-traffic.png]]
 ** A Clue
-file:images/pipeline.png
+[[file:images/pipeline.png]]
 puller to receiver slice is large
 ** A Clue
 [[file:images/timing.png]]
@@ -434,5 +434,5 @@ UDP has no guarantees.
 :END:
 - Edd Steel
 - =@eddsteel=
-- =code.hootsuite.com=
-- =github.com/hootsuite=
+- [[code.hootsuite.com]]
+- [[github.com/hootsuite]]
