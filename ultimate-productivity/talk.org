@@ -1,0 +1,53 @@
+* Outline
+** Demo
+*** ls
+**** very useful
+**** often find myself typing it when I return to a task and need to know where I am/what I'm doing
+**** goto 'what am i doing' tool
+*** sl
+**** similar arguments to ls
+**** Can't ctrl-c it
+**** Have to sit and watch and think about what you did
+** Why did I just type `sl` instead of `ls`
+*** You forgot that l isn't s
+*** You don't know where the keys are and you took a guess
+*** You tried to do it too fast
+*** Your mind is distracted
+*** You're trying to do too much at once
+** Circuit breakers
+*** In electrical systems
+**** diagram
+**** components involved
+**** effect
+*** In computer systems
+*** In general terms
+** Attention, Focus, Concentration -- which are we talking about
+** sl is circuit breaker for an [overwhelmed] person
+*** those three things are symptoms of a mind that is [overwhelmed]
+** How does a programmer get [overwhelmed]?
+** Why don't we want [overwhelmed] people writing the code we maintain and support
+** Why you don't want to spend most of your day [overwhelmed]
+
+** But I wouldn't recommend it for ops
+*** You forgot that l isn't s
+*** You don't know where the keys are and you took a guess
+*** You tried to do it too fast
+*** Your mind is distracted
+*** You're trying to do too much at once
+*** The server has died and you are the first responder
+** I'm sold!
+*** brew install sl
+*** brew install gti
+* work
+** DONE Sort out JS console in HTML
+   CLOSED: [2015-05-10 Sun 15:34]
+   - State "DONE"       from "TODO"       [2015-05-10 Sun 15:34]
+** TODO sort out above within reveal template
+** TODO Good resources for mental impact of doing too much at once
+** TODO new hootsuite theme for reveal
+** TODO clarify [overwhelmed] vs lack of attention
+
+* Research
+** What am I talking about here? Attention? Focus? Concentration? [Overwhelmed]ness?
+teacher's guide to focus/attention/etc http://www.sagepub.com/upm-data/28824_02_Castle_&_Buckler_Ch_02.pdf
+Basics of cognitive science -- what's a good primer?
