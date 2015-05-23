@@ -12,22 +12,29 @@
 *** You forgot that l isn't s
 *** You don't know where the keys are and you took a guess
 *** You tried to do it too fast
-*** Your mind is distracted
+*** You're not paying attention
 *** You're trying to do too much at once
+** Attention, Focus, Concentration -- which are we talking about
+   Cognitive science is a deep topic, but the basic principles of this are fairly simple.
+   Attention break-down in [C&B] - we want to be in 'selective' when writing code
+   Attentional shift - we need to divide our attention but we need to know and we need to shift it back
+   Attention as resource - we have finite attention pools sharded by function
+   There are various ways to improve both retention and the shifting from [divided] to [focused] but key is knowing when this is happening
 ** Circuit breakers
 *** In electrical systems
 **** diagram
 **** components involved
 **** effect
 *** In computer systems
+**** Akka
+**** Services
 *** In general terms
-** Attention, Focus, Concentration -- which are we talking about
-** sl is circuit breaker for an [overwhelmed] person
+** sl is circuit breaker for divided attention
 *** those three things are symptoms of a mind that is [overwhelmed]
-** How does a programmer get [overwhelmed]?
-** Why don't we want [overwhelmed] people writing the code we maintain and support
-** Why you don't want to spend most of your day [overwhelmed]
-
+** How does a programmer get [overwhelmed]? External and Internal causes from C&B
+** Impact
+*** Why don't we want [overwhelmed] people writing the code we maintain and support
+*** Why you don't want to spend most of your day [overwhelmed]
 ** But I wouldn't recommend it for ops
 *** You forgot that l isn't s
 *** You don't know where the keys are and you took a guess
@@ -46,8 +53,25 @@
 ** TODO Good resources for mental impact of doing too much at once
 ** TODO new hootsuite theme for reveal
 ** TODO clarify [overwhelmed] vs lack of attention
-
 * Research
 ** What am I talking about here? Attention? Focus? Concentration? [Overwhelmed]ness?
-teacher's guide to focus/attention/etc http://www.sagepub.com/upm-data/28824_02_Castle_&_Buckler_Ch_02.pdf
-Basics of cognitive science -- what's a good primer?
+   - teacher's guide to focus/attention/etc http://www.sagepub.com/upm-data/28824_02_Castle_&_Buckler_Ch_02.pdf
+   - Basics of cognitive science -- what's a good primer?
+** Analogy with computer memory hierarchy, CPU thrashing etc
+** Notes: C & B - What is attention, how to improve
+*** Attention break-down
+*** Attentional shift
+*** (Attention as filter, attention as spotlight)
+*** Attention as resource: a finite swap space that fills up and needs to be  <- this is promising
+*** External/Internal causes
+*** Techniques for improving
+**** retaining attentional focus
+**** shifting attentional focus
+** Notes: Sport Psychology
+*** Doing two things at once isn't inherently bad, but you need to be very practised at one of them. e.g. athlete dribbling a ball
+*** Attention as a resource
+    you can't do two things that require the same cognitive function at the same time, unless one is highly practiced. But its' been argued people have multiple pools related to function.
+* Bibliography
+C&B: http://www.sagepub.com/upm-data/28824_02_Castle_&_Buckler_Ch_02.pdf
+Sport Pyschology: Contemporary themes http://www.imd.inder.cu/adjuntos/article/567/Sport%20Psychology%20Comtemporary%20Themes.pdf
+Need something on cognitive impact of distraction
