@@ -1,54 +1,59 @@
-* [2/6] TODOs
-** TODO Hootsuite palette on diagrams
-** DONE Sort out JS console in HTML
-   CLOSED: [2015-05-10 Sun 15:34]
-   - State "DONE"       from "TODO"       [2015-05-10 Sun 15:34]
-** TODO org slides
-** TODO Good resources for mental impact of doing too much at once
-** TODO new hootsuite theme for reveal
-** DONE clarify [overwhelmed] vs lack of attention
-   CLOSED: [2015-05-26 Tue 13:55]
-   - State "DONE"       from "TODO"       [2015-05-26 Tue 13:55]
-* Outline
-** Demo
+#+Title: The Ultimate Productivity Tool
+#+Author: Edd Steel
+#+Email: @eddsteel
+#+REVEAL_ROOT: ../../reveal-hs/bower_components/reveal.js
+#+REVEAL_THEME: hootsuite
+#+REVEAL_TRANS: fade
+#+OPTIONS: num:nil toc:nil :-
+#+REVEAL_EXTRA_CSS: ./override.css
+#
+#
+* Demos!
+ #+BEGIN_NOTES
+  Key theme: I often run ls to remember what I'm doing
+ #+END_NOTES
+** =ls=
+ #+BEGIN_NOTES
+   - show ls operation, ls -l, ls -ldh ~
+   - very useful
+   - often find myself typing it when I return to a task and need to know where I am/what I'm doing
+   - my goto 'what am i doing' tool
+ #+END_NOTES
+** =sl=
   #+BEGIN_NOTES
-   Key theme: I often run ls to remember what I'm doing
+   - similar arguments to ls
+   - Difference is... it shows a train
+   - Can't ctrl-c it
+   - Have to sit and watch and think about what you did
   #+END_NOTES
-*** ls
+* Why did I just type =sl= instead of =ls=?
+  -  You forgot that =l= isn't =s=
+  -  You don't know where the keys are and you took a guess
+  -  You tried to do it too fast
+  -  You're not paying attention
+  -  You're trying to do too much at once
+* Cognitive Science
+   Hard field, easy fundamentals
   #+BEGIN_NOTES
-    - show ls operation, ls -l, ls -ldh ~
-    - very useful
-    - often find myself typing it when I return to a task and need to know where I am/what I'm doing
-    - my goto 'what am i doing' tool
+    key theme: - divided attention is no good for coding
   #+END_NOTES
-*** sl
-   #+BEGIN_NOTES
-    - similar arguments to ls
-    - Difference is... it shows a train
-    - Can't ctrl-c it
-    - Have to sit and watch and think about what you did
+#+REVEAL_HTML: <div style="color:white">
+   -  Attention is categorised
+   -  Attention is limited
+   -  One model: attention pools, for different domains
+#+REVEAL_HTML: </div>
+* Cognitive Science
+   Hard field, easy fundamentals
+   -  Attention is categorised
+   -  Attention is limited
+   -  One model: attention pools, for different domains
+  #+BEGIN_NOTES
+    Cognitive Science: how we think
+    Attention is categorised -- different categories are suited to different purposes
+    Attention is limited -- but it's not like a simple gauge that runs out
+    behave like resource pools "sharded" by function.
    #+END_NOTES
-** Why did I just type `sl` instead of `ls`
-*** You forgot that l isn't s
-*** You don't know where the keys are and you took a guess
-*** You tried to do it too fast
-*** You're not paying attention
-*** You're trying to do too much at once
-** Attention
-   #+BEGIN_NOTES
-     key theme: - divided attention is no good for coding
-   #+END_NOTES
-*** Cognitive Science is hard. The fundamentals are simple
-**** Attention is categorised
-**** Attention is limited
-**** One model: attention pools, for different domains
-     #+BEGIN_NOTES
-     Cognitive Science: how we think
-     Attention is categorised -- different categories are suited to different purposes
-     Attention is limited -- but it's not like a simple gauge that runs out
-     behave like resource pools "sharded" by function.
-     #+END_NOTES
-*** Attention can be categorised
+** Attention can be categorised
     #+BEGIN_SRC ditaa :file imgs/attention-I.png :cmdline -E
                           +---------------+
                           |               |
@@ -75,8 +80,9 @@
     [Divided] attention necessary for multi-tasking* and dealing with more than one thing at once
     We're actually really bad at multi-tasking, and in a study those who rated themselves good at it did worse
     #+END_NOTES
-*** Attention can be shifted
+** Attention can be shifted
     #+BEGIN_SRC ditaa :file imgs/attention-II.png :cmdline -E
+
                           +---------------+
                           |               |
                           |   Attention   |
@@ -107,23 +113,31 @@
     We can learn techniques to make this easier
     We should know when we have selective attention on the task at hand.
     #+END_NOTES
-*** Attention is a limited resource. We have attention pools.
-    Attention as resource - we have finite attention pools sharded by function -- we can only do two things at once if we're really good at one of them
-    This is why you can generally type without paying attention, but you can't code without paying attention
-
-** Circuit breakers - turn a sub-optimal situation into a broken one *
-*** What is this item?
-    [http://www.openelectrical.org/wiki/images/2/22/Magnetic-circuit-breaker.JPG]
-*** Electrical circuit breakers
+** Attention as resource.
+   - We have attention pools
+   - They shard by brain function
+   - It's easier for experts
+   - No one can multitask
+   #+BEGIN_NOTES
+     Attention as resource - we have finite attention pools sharded by function
+     e.g.
+        hopping up and down doesn't affect your ability to remember the national anthem
+        talking on the phone does affect your ability to write a poem
+     we can only do two things at once if we're really good at one of them
+     We are expert typers
+     This is why you can generally type without paying attention, but you can't code without paying attention
+   #+END_NOTES
+* What is this item?
+   file:imgs/magnetic-breaker.jpg
+** Electrical circuit breakers
     When current crosses a threshold, the circuit is broken and current goes to 0.
-*** Software circuit breakers
+** Software circuit breakers
 
     #+BEGIN_SRC dot :file imgs/circuit-breaker.png
     digraph {
       rankdir=LR
-      node [shape=circle, fontname=Helvetica, fontsize=18, fixedsize=true, width=2, style=filled]
-      edge [fontname=Helvetica, fontsize=16]
-
+      node [shape=circle, fontname=Helvetica, fontsize=18, fixedsize=true, width=1.5, style=filled]
+      edge [fontname=Helvetica, fontsize=14]
 
       "closed" [fillcolor="#ccffcc", color="#00dd00"]
       "open" [fillcolor="#ffcccc", color="#dd0000"]
@@ -144,67 +158,77 @@
 
     #+RESULTS:
     [[file:imgs/circuit-breaker.png]]
-
-
-    [adapt http://doc.akka.io/docs/akka/snapshot/common/circuitbreaker.html]
-    When (e.g.) a remote system is responding slowly this layer fails fast
+    #+BEGIN_NOTES
+    When (e.g.) a remote system is responding slowly this layer fails fast, and recovers slowly
     So that overall system timing doesn't grow to the timeout time.
     We use this technique in our services and in communicating with new services from dashboard (in conjunction with DL)
-*** In general terms
+    #+END_NOTES
+* In general terms
+   #+BEGIN_QUOTE
     A circuit breaker turns a sub-optimal situation into a broken one, demanding manual intervention
-*** sl is a circuit breaker for divided attention
-** sl is a circuit breaker for divided attention - it shows you when your attention is so depleted you can't ls any more
-*** working-at-hootsuite.gif
-    https://s-media-cache-ak0.pinimg.com/originals/6c/64/00/6c6400b322827e5a471807dd4c8ce836.jpg
-    https://dl.dropboxusercontent.com/u/2468761/gifs/work_at_hootsuite.gif
-    We think we can use our computers and think at the same time because we're really good at computers
-*** working-at-hootsuite.gif, I have that meeting in 5 minutes
-*** working-at-hootsuite.gif, PLAT-327: I'll start on the model first
-*** working-at-hootsuite.gif, I should check why that load is so high
-*** working-at-hootsuite.gif, Ha, Luke got another haircut
-*** working-at-hootsuite.gif, what was I doing?
-*** working-at-hootsuite.gif, circuit breaker
+   #+END_QUOTE
+* sl is a circuit breaker for divided attention
+* sl is a circuit breaker for divided attention
+   it shows you when your attention is so depleted you can't even =ls= any more
+* How it works
+  file:imgs/work_at_hootsuite.gif
+#+BEGIN_NOTES
+We think we can use our computers and think at the same time because we're really good at computers
+#+END_NOTES
+* How it works
+    :PROPERTIES:
+    :reveal_background: ./imgs/work-at-hootsuite.jpg
+    :reveal_background_size: 500px
+    :END:
+        -  working-at-hootsuite.gif, I have that meeting in 5 minutes
+* How it works
+    :PROPERTIES:
+    :reveal_background: ./imgs/work-at-hootsuite.jpg
+    :reveal_background_size: 500px
+    :END:
+        -  working-at-hootsuite.gif, PLAT-327: I'll start on the model first
+* How it works
+    :PROPERTIES:
+    :reveal_background: ./imgs/work-at-hootsuite.jpg
+    :reveal_background_size: 500px
+    :END:
+        -  working-at-hootsuite.gif, I should check why that load is so high
+* How it works
+    :PROPERTIES:
+    :reveal_background: ./imgs/work-at-hootsuite.jpg
+    :reveal_background_size: 500px
+    :END:
+        -  working-at-hootsuite.gif, Ha, Luke got another haircut
+* How it works
+    :PROPERTIES:
+    :reveal_background: ./imgs/work-at-hootsuite.jpg
+    :reveal_background_size: 500px
+    :END:
+        -  working-at-hootsuite.gif, what was I doing?
+* How it works
+    :PROPERTIES:
+    :reveal_background: ./imgs/work-at-hootsuite.jpg
+    :reveal_background_size: 500px
+    :END:
+        -  working-at-hootsuite.gif, circuit breaker
 ** Impact of no breaker
-*** Study shows 20% difference in performance for sequential completion of memory recognition task compared to divided attention
-*** Anecdotally, we've all seen the code that comes out of a lack of attention
-*** Focused attention is powerful and not easily shifted
+        -  Study shows..
+        - * In memory recognition task
+        - * 80% success sequential completion
+        - * 60% success with divided attention
+        -  Anecdotally, we've all seen careless mistakes
 ** ....But I wouldn't recommend it for ops
-*** You forgot that l isn't s
-*** You don't know where the keys are and you took a guess
-*** You tried to do it too fast
-*** Your mind is distracted
-*** You're trying to do too much at once
-*** *The server has died and you are the first responder*
+        -  You forgot that l isn't s
+        -  You don't know where the keys are and you took a guess
+        -  You tried to do it too fast
+        -  Your mind is distracted
+        -  You're trying to do too much at once
+        -  *The server has died and you are the first responder*
 ** I'm sold!
-*** brew install sl
-*** brew install gti -- if you `git status` to remember what you're doing
-
-* Research
-** What am I talking about here? Attention? Focus? Concentration? [Overwhelmed]ness?
-   - teacher's guide to focus/attention/etc http://www.sagepub.com/upm-data/28824_02_Castle_&_Buckler_Ch_02.pdf
-   - Basics of cognitive science -- what's a good primer?
-   - "Attention" covers it
-** Analogy with computer memory hierarchy, CPU thrashing etc?
-** Book Notes
-*** C & B - What is attention, how to improve
-**** Attention break-down
-**** Attentional shift
-**** (Attention as filter, attention as spotlight)
-**** Attention as resource: a finite swap space that fills up and needs to be  <- this is promising
-**** External/Internal causes
-**** Techniques for improving
-***** retaining attentional focus
-***** shifting attentional focus
-*** Sport Psychology
-**** Doing two things at once isn't inherently bad, but you need to be very practised at one of them. e.g. athlete dribbling a ball
-**** Attention as a resource
-     you can't do two things that require the same cognitive function at the same time, unless one is highly practiced. But its' been argued people have multiple pools related to function.
-*** Why we make Mistakes
-    p79 "Multitasking = forgetting"
-    switching from task to task fills our working memory, we forget up to 40% of what we were doing.
-*** "Can you multi task probably not well" - http://psychcentral.com/blog/archives/2009/08/27/can-you-multitask-probably-not-well/
-    The self-selecting high multitaskers were consistently distracted significantly more by irrelevant images they were told to ignore. They also did worse in a task that tested whether they stored and organized information in their memories better than low multitaskers. Not surprisingly, the people who multitask often also did worse on the final task of testing for their ability to quickly switch between different kinds of information identification.
-* Bibliography
-C&B: http://www.sagepub.com/upm-data/28824_02_Castle_&_Buckler_Ch_02.pdf
-Sport Pyschology: Contemporary themes http://www.imd.inder.cu/adjuntos/article/567/Sport%20Psychology%20Comtemporary%20Themes.pdf
-Need something on cognitive impact of distraction
+        - =brew install sl=
+        - =brew install gti= (if you =git status= to remember what you're doing)
+* Questions?
+   :PROPERTIES:
+   :reveal_data_state: reverse
+   :END:
+  Thanks for shifting your selective attention

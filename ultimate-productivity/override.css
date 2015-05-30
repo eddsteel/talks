@@ -1,0 +1,20 @@
+/* Have to bring in these because ox-reveal only supports one custom css file */
+
+@import url('../../reveal-hs/css/theme/hootsuite.css');
+@import url('../../reveal-hs/css/style.css');
+@import url('../../reveal-hs/bower_components/reveal.js/lib/css/zenburn.css');
+
+img {
+    display: block;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.working-at-hs {
+    backround-image: url('imgs/work_at_hootsuite.gif');
+    background-repeat: none;
+    background-scale: 1;
+    background
+
+}
