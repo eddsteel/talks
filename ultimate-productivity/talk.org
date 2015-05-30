@@ -10,33 +10,50 @@
    CLOSED: [2015-05-26 Tue 13:55]
    - State "DONE"       from "TODO"       [2015-05-26 Tue 13:55]
 * Outline
-** Demo - I often run ls to remember what I'm doing *
+** Demo
+  #+BEGIN_NOTES
+   Key theme: I often run ls to remember what I'm doing
+  #+END_NOTES
 *** ls
-**** very useful
-**** often find myself typing it when I return to a task and need to know where I am/what I'm doing
-**** goto 'what am i doing' tool
+  #+BEGIN_NOTES
+    - show ls operation, ls -l, ls -ldh ~
+    - very useful
+    - often find myself typing it when I return to a task and need to know where I am/what I'm doing
+    - my goto 'what am i doing' tool
+  #+END_NOTES
 *** sl
-**** similar arguments to ls
-**** Can't ctrl-c it
-**** Have to sit and watch and think about what you did
-** Why did I just type `sl` instead of `ls` *
+   #+BEGIN_NOTES
+    - similar arguments to ls
+    - Difference is... it shows a train
+    - Can't ctrl-c it
+    - Have to sit and watch and think about what you did
+   #+END_NOTES
+** Why did I just type `sl` instead of `ls`
 *** You forgot that l isn't s
 *** You don't know where the keys are and you took a guess
 *** You tried to do it too fast
 *** You're not paying attention
 *** You're trying to do too much at once
-** Attention - divided attention is no good for coding *
-*** Cognitive Science is hard. The fundamentals are easy
-    Cognitive science is a deep topic, but the basic principles of this are fairly simple.
-*** Attention is a limited resource. We have attention pools.
-    Attention as resource - we have finite attention pools sharded by function -- we can only do two things at once if we're really good at one of them
-    This is why you can generally type without paying attention, but you can't code without paying attention
+** Attention
+   #+BEGIN_NOTES
+     key theme: - divided attention is no good for coding
+   #+END_NOTES
+*** Cognitive Science is hard. The fundamentals are simple
+**** Attention is categorised
+**** Attention is limited
+**** One model: attention pools, for different domains
+     #+BEGIN_NOTES
+     Cognitive Science: how we think
+     Attention is categorised -- different categories are suited to different purposes
+     Attention is limited -- but it's not like a simple gauge that runs out
+     behave like resource pools "sharded" by function.
+     #+END_NOTES
 *** Attention can be categorised
     #+BEGIN_SRC ditaa :file attention-I.png :cmdline -E
                           +---------------+
                           |               |
                           |   Attention   |
-                          | c             |
+                          |               |
                           +------+-+------+
                                  | |
                      /-----------/ \-----------\
@@ -53,9 +70,11 @@
     #+RESULTS:
     [[file:attention-I.png]]
 
-    [C&B diagram I]
+    #+BEGIN_NOTES
     Selective attention is deeply focused, when all your resources are used for one thing
     [Divided] attention necessary for multi-tasking* and dealing with more than one thing at once
+    We're actually really bad at multi-tasking, and in a study those who rated themselves good at it did worse
+    #+END_NOTES
 *** Attention can be shifted
     #+BEGIN_SRC ditaa :file attention-II.png :cmdline -E
                           +---------------+
@@ -83,10 +102,15 @@
     #+RESULTS:
     [[file:attention-II.png]]
 
-    [C&B diagram II]
+    #+BEGIN_NOTES
     Circumstances often force us to divide our attention, but with effort we can shift it back.
     We can learn techniques to make this easier
     We should know when we have selective attention on the task at hand.
+    #+END_NOTES
+*** Attention is a limited resource. We have attention pools.
+    Attention as resource - we have finite attention pools sharded by function -- we can only do two things at once if we're really good at one of them
+    This is why you can generally type without paying attention, but you can't code without paying attention
+
 ** Circuit breakers - turn a sub-optimal situation into a broken one *
 *** What is this item?
     [http://www.openelectrical.org/wiki/images/2/22/Magnetic-circuit-breaker.JPG]
