@@ -1,5 +1,16 @@
+* [2/6] TODOs
+** TODO Hootsuite palette on diagrams
+** DONE Sort out JS console in HTML
+   CLOSED: [2015-05-10 Sun 15:34]
+   - State "DONE"       from "TODO"       [2015-05-10 Sun 15:34]
+** TODO org slides
+** TODO Good resources for mental impact of doing too much at once
+** TODO new hootsuite theme for reveal
+** DONE clarify [overwhelmed] vs lack of attention
+   CLOSED: [2015-05-26 Tue 13:55]
+   - State "DONE"       from "TODO"       [2015-05-26 Tue 13:55]
 * Outline
-** Demo
+** Demo - I often run ls to remember what I'm doing *
 *** ls
 **** very useful
 **** often find myself typing it when I return to a task and need to know where I am/what I'm doing
@@ -8,69 +19,167 @@
 **** similar arguments to ls
 **** Can't ctrl-c it
 **** Have to sit and watch and think about what you did
-** Why did I just type `sl` instead of `ls`
+** Why did I just type `sl` instead of `ls` *
 *** You forgot that l isn't s
 *** You don't know where the keys are and you took a guess
 *** You tried to do it too fast
 *** You're not paying attention
 *** You're trying to do too much at once
-** Attention, Focus, Concentration -- which are we talking about
-   Cognitive science is a deep topic, but the basic principles of this are fairly simple.
-   Attention break-down in [C&B] - we want to be in 'selective' when writing code
-   Attentional shift - we need to divide our attention but we need to know and we need to shift it back
-   Attention as resource - we have finite attention pools sharded by function
-   There are various ways to improve both retention and the shifting from [divided] to [focused] but key is knowing when this is happening
-** Circuit breakers
-*** In electrical systems
-**** diagram
-**** components involved
-**** effect
-*** In computer systems
-**** Akka
-**** Services
+** Attention - divided attention is no good for coding *
+*** Cognitive Science is hard. The fundamentals are easy
+    Cognitive science is a deep topic, but the basic principles of this are fairly simple.
+*** Attention is a limited resource. We have attention pools.
+    Attention as resource - we have finite attention pools sharded by function -- we can only do two things at once if we're really good at one of them
+    This is why you can generally type without paying attention, but you can't code without paying attention
+*** Attention can be categorised
+    #+BEGIN_SRC ditaa :file attention-I.png :cmdline -E
+                          +---------------+
+                          |               |
+                          |   Attention   |
+                          | c             |
+                          +------+-+------+
+                                 | |
+                     /-----------/ \-----------\
+                     |                         |
+                     V                         V
+               +-----+-----+              +----+----+
+               | Selective |              + Divided |
+               +-----------+              +---------+
+               |  focused  |              |unfocused|
+               +-----------+              +---------+
+
+    #+END_SRC
+
+    #+RESULTS:
+    [[file:attention-I.png]]
+
+    [C&B diagram I]
+    Selective attention is deeply focused, when all your resources are used for one thing
+    [Divided] attention necessary for multi-tasking* and dealing with more than one thing at once
+*** Attention can be shifted
+    #+BEGIN_SRC ditaa :file attention-II.png :cmdline -E
+                          +---------------+
+                          |               |
+                          |   Attention   |
+                          |               |
+                          +------+-+------+
+                                 | |
+                     /-----------/ \-----------\
+                     |                         |
+                     V                         V
+              +------+----+  attentional  +----+----+
+              | Selective +<-=----------->+ Divided |
+              +-----------+    shift      +---+++---+
+              | focused   |                   |||
+              +-----------+          /--------/|\-------\
+                                     |         |        |
+                                     V         V        v
+                                 +---+--+ +----+---+ +--+---+
+                                 |Task A| |Person B| |Task C|
+                                 +------+ +--------+ +------+
+
+    #+END_SRC
+
+    #+RESULTS:
+    [[file:attention-II.png]]
+
+    [C&B diagram II]
+    Circumstances often force us to divide our attention, but with effort we can shift it back.
+    We can learn techniques to make this easier
+    We should know when we have selective attention on the task at hand.
+** Circuit breakers - turn a sub-optimal situation into a broken one *
+*** What is this item?
+    [http://www.openelectrical.org/wiki/images/2/22/Magnetic-circuit-breaker.JPG]
+*** Electrical circuit breakers
+    When current crosses a threshold, the circuit is broken and current goes to 0.
+*** Software circuit breakers
+
+    #+BEGIN_SRC dot :file circuit-breaker.png
+    digraph {
+      rankdir=LR
+      node [shape=circle, fontname=Helvetica, fontsize=18, fixedsize=true, width=2, style=filled]
+      edge [fontname=Helvetica, fontsize=16]
+
+
+      "closed" [fillcolor="#ccffcc", color="#00dd00"]
+      "open" [fillcolor="#ffcccc", color="#dd0000"]
+      "half-open" [fillcolor="#ffffcc", color="#dddd00"]
+
+      "closed" -> "closed" [label=success, color="#00dd00"]
+      "closed" -> "open" [label=failure, color="#dd0000"]
+      "open" -> "open" [label="fail-fast", color="#dd0000"]
+      "open" -> "half-open" [label=timeout, color="#dddd00"]
+      "half-open" -> "open" [label=trip, color="#dd0000"]
+      "half-open" -> "closed" [label=reset, color="#00dd00"]
+
+      edge [dir=none]
+      {rank=same "Akka Circuit-breaker Pattern" "open"}
+      "Akka Circuit-breaker Pattern" [shape=plaintext,style=empty] -> "open" [constraint=false]
+    }
+    #+END_SRC
+
+    #+RESULTS:
+    [[file:circuit-breaker.png]]
+
+
+    [adapt http://doc.akka.io/docs/akka/snapshot/common/circuitbreaker.html]
+    When (e.g.) a remote system is responding slowly this layer fails fast
+    So that overall system timing doesn't grow to the timeout time.
+    We use this technique in our services and in communicating with new services from dashboard (in conjunction with DL)
 *** In general terms
-** sl is circuit breaker for divided attention
-*** those three things are symptoms of a mind that is [overwhelmed]
-** How does a programmer get [overwhelmed]? External and Internal causes from C&B
-** Impact
-*** Why don't we want [overwhelmed] people writing the code we maintain and support
-*** Why you don't want to spend most of your day [overwhelmed]
-** But I wouldn't recommend it for ops
+    A circuit breaker turns a sub-optimal situation into a broken one, demanding manual intervention
+*** sl is a circuit breaker for divided attention
+** sl is a circuit breaker for divided attention - it shows you when your attention is so depleted you can't ls any more
+*** working-at-hootsuite.gif
+    https://s-media-cache-ak0.pinimg.com/originals/6c/64/00/6c6400b322827e5a471807dd4c8ce836.jpg
+    https://dl.dropboxusercontent.com/u/2468761/gifs/work_at_hootsuite.gif
+    We think we can use our computers and think at the same time because we're really good at computers
+*** working-at-hootsuite.gif, I have that meeting in 5 minutes
+*** working-at-hootsuite.gif, PLAT-327: I'll start on the model first
+*** working-at-hootsuite.gif, I should check why that load is so high
+*** working-at-hootsuite.gif, Ha, Luke got another haircut
+*** working-at-hootsuite.gif, what was I doing?
+*** working-at-hootsuite.gif, circuit breaker
+** Impact of no breaker
+*** Study shows 20% difference in performance for sequential completion of memory recognition task compared to divided attention
+*** Anecdotally, we've all seen the code that comes out of a lack of attention
+*** Focused attention is powerful and not easily shifted
+** ....But I wouldn't recommend it for ops
 *** You forgot that l isn't s
 *** You don't know where the keys are and you took a guess
 *** You tried to do it too fast
 *** Your mind is distracted
 *** You're trying to do too much at once
-*** The server has died and you are the first responder
+*** *The server has died and you are the first responder*
 ** I'm sold!
 *** brew install sl
-*** brew install gti
-* work
-** DONE Sort out JS console in HTML
-   CLOSED: [2015-05-10 Sun 15:34]
-   - State "DONE"       from "TODO"       [2015-05-10 Sun 15:34]
-** TODO sort out above within reveal template
-** TODO Good resources for mental impact of doing too much at once
-** TODO new hootsuite theme for reveal
-** TODO clarify [overwhelmed] vs lack of attention
+*** brew install gti -- if you `git status` to remember what you're doing
+
 * Research
 ** What am I talking about here? Attention? Focus? Concentration? [Overwhelmed]ness?
    - teacher's guide to focus/attention/etc http://www.sagepub.com/upm-data/28824_02_Castle_&_Buckler_Ch_02.pdf
    - Basics of cognitive science -- what's a good primer?
-** Analogy with computer memory hierarchy, CPU thrashing etc
-** Notes: C & B - What is attention, how to improve
-*** Attention break-down
-*** Attentional shift
-*** (Attention as filter, attention as spotlight)
-*** Attention as resource: a finite swap space that fills up and needs to be  <- this is promising
-*** External/Internal causes
-*** Techniques for improving
-**** retaining attentional focus
-**** shifting attentional focus
-** Notes: Sport Psychology
-*** Doing two things at once isn't inherently bad, but you need to be very practised at one of them. e.g. athlete dribbling a ball
-*** Attention as a resource
-    you can't do two things that require the same cognitive function at the same time, unless one is highly practiced. But its' been argued people have multiple pools related to function.
+   - "Attention" covers it
+** Analogy with computer memory hierarchy, CPU thrashing etc?
+** Book Notes
+*** C & B - What is attention, how to improve
+**** Attention break-down
+**** Attentional shift
+**** (Attention as filter, attention as spotlight)
+**** Attention as resource: a finite swap space that fills up and needs to be  <- this is promising
+**** External/Internal causes
+**** Techniques for improving
+***** retaining attentional focus
+***** shifting attentional focus
+*** Sport Psychology
+**** Doing two things at once isn't inherently bad, but you need to be very practised at one of them. e.g. athlete dribbling a ball
+**** Attention as a resource
+     you can't do two things that require the same cognitive function at the same time, unless one is highly practiced. But its' been argued people have multiple pools related to function.
+*** Why we make Mistakes
+    p79 "Multitasking = forgetting"
+    switching from task to task fills our working memory, we forget up to 40% of what we were doing.
+*** "Can you multi task probably not well" - http://psychcentral.com/blog/archives/2009/08/27/can-you-multitask-probably-not-well/
+    The self-selecting high multitaskers were consistently distracted significantly more by irrelevant images they were told to ignore. They also did worse in a task that tested whether they stored and organized information in their memories better than low multitaskers. Not surprisingly, the people who multitask often also did worse on the final task of testing for their ability to quickly switch between different kinds of information identification.
 * Bibliography
 C&B: http://www.sagepub.com/upm-data/28824_02_Castle_&_Buckler_Ch_02.pdf
 Sport Pyschology: Contemporary themes http://www.imd.inder.cu/adjuntos/article/567/Sport%20Psychology%20Comtemporary%20Themes.pdf
