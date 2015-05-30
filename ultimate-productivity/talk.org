@@ -6,22 +6,22 @@
 #+REVEAL_TRANS: fade
 #+OPTIONS: num:nil toc:nil :-
 #+REVEAL_EXTRA_CSS: ./override.css
+#+REVEAL_HEAD_PREAMBLE: <script src="http://localhost:3000/socket.io/socket.io.js"></script> <script src="http://localhost:3000/socket.io-stream.js"></script> <script src="http://localhost:3000/terminal.js"></script>
 #
 #
 * Demos!
  #+BEGIN_NOTES
   Key theme: I often run ls to remember what I'm doing
  #+END_NOTES
-** =ls=
- #+BEGIN_NOTES
+** =ls= and =sl=
+#+REVEAL_HTML: <iframe src="http://localhost:3000/index.html" style="height: 90%; width: 100%;">
+#+REVEAL_HTML: </iframe>
+  #+BEGIN_NOTES
    - show ls operation, ls -l, ls -ldh ~
    - very useful
    - often find myself typing it when I return to a task and need to know where I am/what I'm doing
    - my goto 'what am i doing' tool
- #+END_NOTES
-** =sl=
-  #+BEGIN_NOTES
-   - similar arguments to ls
+   - sl has similar arguments to ls
    - Difference is... it shows a train
    - Can't ctrl-c it
    - Have to sit and watch and think about what you did
@@ -127,7 +127,7 @@
      We are expert typers
      This is why you can generally type without paying attention, but you can't code without paying attention
    #+END_NOTES
-* What is this item?
+* What is this?
    file:imgs/magnetic-breaker.jpg
 ** Electrical circuit breakers
     When current crosses a threshold, the circuit is broken and current goes to 0.
@@ -168,67 +168,75 @@
     A circuit breaker turns a sub-optimal situation into a broken one, demanding manual intervention
    #+END_QUOTE
 * sl is a circuit breaker for divided attention
-* sl is a circuit breaker for divided attention
    it shows you when your attention is so depleted you can't even =ls= any more
 * How it works
-  file:imgs/work_at_hootsuite.gif
-#+BEGIN_NOTES
-We think we can use our computers and think at the same time because we're really good at computers
-#+END_NOTES
+    file:./imgs/work-at-hootsuite.gif
 * How it works
-    :PROPERTIES:
-    :reveal_background: ./imgs/work-at-hootsuite.jpg
-    :reveal_background_size: 500px
-    :END:
-        -  working-at-hootsuite.gif, I have that meeting in 5 minutes
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
 * How it works
-    :PROPERTIES:
-    :reveal_background: ./imgs/work-at-hootsuite.jpg
-    :reveal_background_size: 500px
-    :END:
-        -  working-at-hootsuite.gif, PLAT-327: I'll start on the model first
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+- PLAT-327: I'll start on the model first
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
 * How it works
-    :PROPERTIES:
-    :reveal_background: ./imgs/work-at-hootsuite.jpg
-    :reveal_background_size: 500px
-    :END:
-        -  working-at-hootsuite.gif, I should check why that load is so high
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+- PLAT-327: I'll start on the model first
+- I should check why that load is so high
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
 * How it works
-    :PROPERTIES:
-    :reveal_background: ./imgs/work-at-hootsuite.jpg
-    :reveal_background_size: 500px
-    :END:
-        -  working-at-hootsuite.gif, Ha, Luke got another haircut
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+- PLAT-327: I'll start on the model first
+- I should check why that load is so high
+- Ha, Luke got another haircut
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
 * How it works
-    :PROPERTIES:
-    :reveal_background: ./imgs/work-at-hootsuite.jpg
-    :reveal_background_size: 500px
-    :END:
-        -  working-at-hootsuite.gif, what was I doing?
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+- PLAT-327: I'll start on the model first
+- I should check why that load is so high
+- Ha, Luke got another haircut
+- what was I doing?
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
 * How it works
-    :PROPERTIES:
-    :reveal_background: ./imgs/work-at-hootsuite.jpg
-    :reveal_background_size: 500px
-    :END:
-        -  working-at-hootsuite.gif, circuit breaker
-** Impact of no breaker
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+- PLAT-327: I'll start on the model first
+- I should check why that load is so high
+- Ha, Luke got another haircut
+- what was I doing?
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="computer-bubble">
+CHOO CHOO!
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
+* Why is selective attention important?
         -  Study shows..
-        - * In memory recognition task
-        - * 80% success sequential completion
-        - * 60% success with divided attention
+          - In memory recognition task
+          - 80% success sequential completion
+          - 60% success with divided attention
         -  Anecdotally, we've all seen careless mistakes
 ** ....But I wouldn't recommend it for ops
-        -  You forgot that l isn't s
-        -  You don't know where the keys are and you took a guess
-        -  You tried to do it too fast
-        -  Your mind is distracted
-        -  You're trying to do too much at once
-        -  *The server has died and you are the first responder*
+  -  You forgot that =l= isn't =s=
+  -  You don't know where the keys are and you took a guess
+  -  You tried to do it too fast
+  -  You're not paying attention
+  -  You're trying to do too much at once
+  -  *The server has died and you are the first responder*
 ** I'm sold!
-        - =brew install sl=
-        - =brew install gti= (if you =git status= to remember what you're doing)
+  - =brew install sl=
+  - =brew install gti= (if you =git status= to remember what you're doing)
 * Questions?
    :PROPERTIES:
    :reveal_data_state: reverse
    :END:
   Thanks for shifting your selective attention
+* CLI

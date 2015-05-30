@@ -19,6 +19,7 @@
         document.getElementsByTagName( 'head' )[0].appendChild( link );
     }
 </script>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script> <script src="http://localhost:3000/socket.io-stream.js"></script> <script src="http://localhost:3000/terminal.js"></script>
 </head>
 <body>
 <div class="reveal">
@@ -39,7 +40,9 @@ Key theme: I often run ls to remember what I'm doing
 </aside>
 </section>
 <section id="slide-sec-1-1">
-<h3 id="sec-1-1"><code>ls</code></h3>
+<h3 id="sec-1-1"><code>ls</code> and <code>sl</code></h3>
+<iframe src="http://localhost:3000/index.html" style="height: 90%; width: 100%;">
+</iframe>
 <aside class="notes">
 <ul class="org-ul">
 <li>show ls operation, ls -l, ls -ldh ~
@@ -50,15 +53,7 @@ Key theme: I often run ls to remember what I'm doing
 </li>
 <li>my goto 'what am i doing' tool
 </li>
-</ul>
-
-</aside>
-</section>
-<section id="slide-sec-1-2">
-<h3 id="sec-1-2"><code>sl</code></h3>
-<aside class="notes">
-<ul class="org-ul">
-<li>similar arguments to ls
+<li>sl has similar arguments to ls
 </li>
 <li>Difference is&#x2026; it shows a train
 </li>
@@ -96,6 +91,14 @@ key theme: - divided attention is no good for coding
 </p>
 
 </aside>
+<div style="color:white">
+<ul>
+<li>Attention is categorised</li>
+<li>Attention is limited</li>
+<li>One model: attention pools, for different domains</li>
+
+</ul>
+</div>
 </section>
 </section>
 <section>
@@ -266,49 +269,147 @@ it shows you when your attention is so depleted you can't even <code>ls</code> a
 <section>
 <section id="slide-sec-9">
 <h2 id="sec-9">How it works</h2>
+<div class="thought-bubble">
 <ul>
-<li>working-at-hootsuite.gif</li>
+<li>I have that meeting in 5 minutes</li>
 
 </ul>
-<p>
-<img src="imgs/work_at_hootsuite.gif" alt="work_at_hootsuite.gif" />
-We think we can use our computers and think at the same time because we're really good at computers
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
 </p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-10">
+<h2 id="sec-10">How it works</h2>
+<div class="thought-bubble">
 <ul>
-<li>working-at-hootsuite.gif, I have that meeting in 5 minutes</li>
-<li>working-at-hootsuite.gif, PLAT-327: I'll start on the model first</li>
-<li>working-at-hootsuite.gif, I should check why that load is so high</li>
-<li>working-at-hootsuite.gif, Ha, Luke got another haircut</li>
-<li>working-at-hootsuite.gif, what was I doing?</li>
-<li>working-at-hootsuite.gif, circuit breaker</li>
+<li>I have that meeting in 5 minutes</li>
+<li>PLAT-327: I'll start on the model first</li>
 
 </ul>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
 </section>
-<section id="slide-sec-9-1">
-<h3 id="sec-9-1">Impact of no breaker</h3>
+</section>
+<section>
+<section id="slide-sec-11">
+<h2 id="sec-11">How it works</h2>
+<div class="thought-bubble">
 <ul>
-<li>Study shows..</li>
-<li>* In memory recognition task</li>
-<li>* 80% success sequential completion</li>
-<li>* 60% success with divided attention</li>
+<li>I have that meeting in 5 minutes</li>
+<li>PLAT-327: I'll start on the model first</li>
+<li>I should check why that load is so high</li>
+
+</ul>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-12">
+<h2 id="sec-12">How it works</h2>
+<div class="thought-bubble">
+<ul>
+<li>I have that meeting in 5 minutes</li>
+<li>PLAT-327: I'll start on the model first</li>
+<li>I should check why that load is so high</li>
+<li>Ha, Luke got another haircut</li>
+
+</ul>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-13">
+<h2 id="sec-13">How it works</h2>
+<div class="thought-bubble">
+<ul>
+<li>I have that meeting in 5 minutes</li>
+<li>PLAT-327: I'll start on the model first</li>
+<li>I should check why that load is so high</li>
+<li>Ha, Luke got another haircut</li>
+<li>what was I doing?</li>
+
+</ul>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-14">
+<h2 id="sec-14">How it works</h2>
+<div class="thought-bubble">
+<ul>
+<li>I have that meeting in 5 minutes</li>
+<li>PLAT-327: I'll start on the model first</li>
+<li>I should check why that load is so high</li>
+<li>Ha, Luke got another haircut</li>
+<li>what was I doing?</li>
+
+</ul>
+</div>
+<div class="computer-bubble">
+<p>
+CHOO CHOO!
+</p>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-15">
+<h2 id="sec-15">Why is selective attention important?</h2>
+<ul>
+<li>Study shows..
+<ul>
+<li>In memory recognition task</li>
+<li>80% success sequential completion</li>
+<li>60% success with divided attention</li>
+
+</ul></li>
 <li>Anecdotally, we've all seen careless mistakes</li>
 
 </ul>
 </section>
-<section id="slide-sec-9-2">
-<h3 id="sec-9-2">&#x2026;.But I wouldn't recommend it for ops</h3>
+<section id="slide-sec-15-1">
+<h3 id="sec-15-1">&#x2026;.But I wouldn't recommend it for ops</h3>
 <ul>
-<li>You forgot that l isn't s</li>
+<li>You forgot that <code>l</code> isn't <code>s</code></li>
 <li>You don't know where the keys are and you took a guess</li>
 <li>You tried to do it too fast</li>
-<li>Your mind is distracted</li>
+<li>You're not paying attention</li>
 <li>You're trying to do too much at once</li>
 <li><b>The server has died and you are the first responder</b></li>
 
 </ul>
 </section>
-<section id="slide-sec-9-3">
-<h3 id="sec-9-3">I'm sold!</h3>
+<section id="slide-sec-15-2">
+<h3 id="sec-15-2">I'm sold!</h3>
 <ul>
 <li><code>brew install sl</code></li>
 <li><code>brew install gti</code> (if you <code>git status</code> to remember what you're doing)</li>
@@ -317,11 +418,16 @@ We think we can use our computers and think at the same time because we're reall
 </section>
 </section>
 <section>
-<section id="slide-sec-10" data-state="reverse">
-<h2 id="sec-10">Questions?</h2>
+<section id="slide-sec-16" data-state="reverse">
+<h2 id="sec-16">Questions?</h2>
 <p>
 Thanks for shifting your selective attention
 </p>
+</section>
+</section>
+<section>
+<section id="slide-sec-17">
+<h2 id="sec-17">CLI</h2>
 </section>
 </section>
 </div>

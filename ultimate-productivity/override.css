@@ -11,10 +11,47 @@ img {
     border: none !important;
 }
 
-.working-at-hs {
-    backround-image: url('imgs/work_at_hootsuite.gif');
-    background-repeat: none;
-    background-scale: 1;
-    background
+.thought-bubble {
+    position: absolute;
+    size: 1.3em;
+    top: 150px;
+    right: 30%;
+    width: 30%;
+}
 
+.thought-bubble ul {
+    margin: 0;
+    padding: 0;
+}
+
+.thought-bubble li {
+    position: relative;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    border: black 1px solid !important;
+    margin-top: -50px;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.computer-bubble {
+    position: absolute;
+    size: 5em;
+    font-weight: bolder;
+    bottom: 150px;
+    width: 30%;
+    right: 20%;
+    color: red;
+    background-color: white;
+    border: red 4px solid !important;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+iframe {
+    min-height: 500px;
+    height: 100%;
+    width: 100%;
 }
