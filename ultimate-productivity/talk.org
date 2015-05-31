@@ -5,7 +5,7 @@
 #+REVEAL_THEME: hootsuite
 #+REVEAL_TRANS: fade
 #+OPTIONS: num:nil toc:nil :-
-#+OPTIONS: reveal_control:nil reveal_progress:nil reveal_overview:nil
+#+OPTIONS: reveal_control:nil reveal_progress:nil reveal_overview:nil reveal_title_slide:t
 #+REVEAL_EXTRA_CSS: ./override.css
 #+REVEAL_HEAD_PREAMBLE: <script src="http://localhost:3000/socket.io/socket.io.js"></script> <script src="http://localhost:3000/socket.io-stream.js"></script> <script src="http://localhost:3000/terminal.js"></script>
 #+REVEAL_PLUGINS: (highlight)
