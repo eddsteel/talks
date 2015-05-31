@@ -47,6 +47,7 @@ img {
     background-color: white;
     border: red 4px solid !important;
     border-radius: 10px;
+    text-align:center;
     padding: 10px;
 }
 
@@ -54,4 +55,10 @@ iframe {
     min-height: 500px;
     height: 100%;
     width: 100%;
+}
+
+.see-through li {
+    color: rgba(0,0,0,0) !important;
+    background-color: rgba(0,0,0,0) !important;
+    border-color: rgba(0,0,0,0) !important;
 }

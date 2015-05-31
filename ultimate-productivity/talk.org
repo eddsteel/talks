@@ -5,8 +5,10 @@
 #+REVEAL_THEME: hootsuite
 #+REVEAL_TRANS: fade
 #+OPTIONS: num:nil toc:nil :-
+#+OPTIONS: reveal_control:nil reveal_progress:nil reveal_overview:nil
 #+REVEAL_EXTRA_CSS: ./override.css
 #+REVEAL_HEAD_PREAMBLE: <script src="http://localhost:3000/socket.io/socket.io.js"></script> <script src="http://localhost:3000/socket.io-stream.js"></script> <script src="http://localhost:3000/terminal.js"></script>
+#+REVEAL_PLUGINS: (highlight)
 #
 #
 * Demos!
@@ -128,7 +130,7 @@
      This is why you can generally type without paying attention, but you can't code without paying attention
    #+END_NOTES
 * What is this?
-   file:imgs/magnetic-breaker.jpg
+  file:imgs/magnetic-breaker.jpg
 ** Electrical circuit breakers
     When current crosses a threshold, the circuit is broken and current goes to 0.
 ** Software circuit breakers
@@ -168,8 +170,14 @@
     A circuit breaker turns a sub-optimal situation into a broken one, demanding manual intervention
    #+END_QUOTE
 * sl is a circuit breaker for divided attention
-   it shows you when your attention is so depleted you can't even =ls= any more
+     =sl= shows you when your attention is so depleted you can't even =ls= any more.
+   #+BEGIN_NOTES
+     And when it is time to stop what you are doing and go get a coffee.
+   #+END_NOTES
 * How it works
+#+REVEAL_HTML: <div class="thought-bubble see-through">
+- ...
+#+REVEAL_HTML: </div>
     file:./imgs/work-at-hootsuite.gif
 * How it works
 #+REVEAL_HTML: <div class="thought-bubble">
@@ -233,10 +241,10 @@ CHOO CHOO!
   -  *The server has died and you are the first responder*
 ** I'm sold!
   - =brew install sl=
-  - =brew install gti= (if you =git status= to remember what you're doing)
+  - =brew install gti=
+    - (if you =git status= to remember what you're doing)
 * Questions?
    :PROPERTIES:
-   :reveal_data_state: reverse
+   :reveal_extra_attr: class="title-slide"
    :END:
-  Thanks for shifting your selective attention
-* CLI
+  Thanks for shifting your selective attention!

@@ -42,6 +42,7 @@ Key theme: I often run ls to remember what I'm doing
 <section id="slide-sec-1-1">
 <h3 id="sec-1-1"><code>ls</code> and <code>sl</code></h3>
 <iframe src="http://localhost:3000/index.html" style="height: 90%; width: 100%;">
+Unable to connect to terminal app
 </iframe>
 <aside class="notes">
 <ul class="org-ul">
@@ -213,7 +214,7 @@ This is why you can generally type without paying attention, but you can't code 
 </section>
 <section>
 <section id="slide-sec-5">
-<h2 id="sec-5">What is this item?</h2>
+<h2 id="sec-5">What is this?</h2>
 
 <div class="figure">
 <p><img src="imgs/magnetic-breaker.jpg" alt="magnetic-breaker.jpg" />
@@ -256,14 +257,31 @@ A circuit breaker turns a sub-optimal situation into a broken one, demanding man
 <section>
 <section id="slide-sec-7">
 <h2 id="sec-7">sl is a circuit breaker for divided attention</h2>
+<p>
+<code>sl</code> shows you when your attention is so depleted you can't even <code>ls</code> any more.
+</p>
+<aside class="notes">
+<p>
+And when it is time to stop what you are doing and go get a coffee.
+</p>
+
+</aside>
 </section>
 </section>
 <section>
 <section id="slide-sec-8">
-<h2 id="sec-8">sl is a circuit breaker for divided attention</h2>
-<p>
-it shows you when your attention is so depleted you can't even <code>ls</code> any more
+<h2 id="sec-8">How it works</h2>
+<div class="thought-bubble see-through">
+<ul>
+<li>&#x2026;</li>
+
+</ul>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
 </p>
+</div>
 </section>
 </section>
 <section>
@@ -412,22 +430,21 @@ CHOO CHOO!
 <h3 id="sec-15-2">I'm sold!</h3>
 <ul>
 <li><code>brew install sl</code></li>
-<li><code>brew install gti</code> (if you <code>git status</code> to remember what you're doing)</li>
+<li><code>brew install gti</code>
+<ul>
+<li>(if you <code>git status</code> to remember what you're doing)</li>
+
+</ul></li>
 
 </ul>
 </section>
 </section>
 <section>
-<section id="slide-sec-16" data-state="reverse">
+<section id="slide-sec-16" class="title-slide">
 <h2 id="sec-16">Questions?</h2>
 <p>
-Thanks for shifting your selective attention
+Thanks for shifting your selective attention!
 </p>
-</section>
-</section>
-<section>
-<section id="slide-sec-17">
-<h2 id="sec-17">CLI</h2>
 </section>
 </section>
 </div>
@@ -441,14 +458,14 @@ Thanks for shifting your selective attention
 // https://github.com/hakimel/reveal.js#configuration
 Reveal.initialize({
 
-controls: true,
-progress: true,
+controls: false,
+progress: false,
 history: false,
 center: true,
 slideNumber: true,
 rollingLinks: false,
 keyboard: true,
-overview: true,
+overview: false,
 
 theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
@@ -461,12 +478,7 @@ multiplex: {
 
 // Optional libraries used to extend on reveal.js
 dependencies: [
- { src: '../../reveal-hs/bower_components/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
- { src: '../../reveal-hs/bower_components/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: '../../reveal-hs/bower_components/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: '../../reveal-hs/bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
- { src: '../../reveal-hs/bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
- { src: '../../reveal-hs/bower_components/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+ { src: '../../reveal-hs/bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
 ]
 });
 </script>
