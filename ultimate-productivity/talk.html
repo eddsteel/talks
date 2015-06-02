@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>The Ultimate Productivity Tool</title>
+<meta name="author" content="(Edd Steel)"/>
+
+<link rel="stylesheet" href="../../reveal-hs/bower_components/reveal.js/css/reveal.css"/>
+<link rel="stylesheet" href="../../reveal-hs/bower_components/reveal.js/css/theme/hootsuite.css" id="theme"/>
+<link rel="stylesheet" href="./override.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = '../../reveal-hs/bower_components/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script> <script src="http://localhost:3000/socket.io-stream.js"></script> <script src="http://localhost:3000/terminal.js"></script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" class="title-slide">
+<h1>The Ultimate Productivity Tool</h1>
+<p><strong>Edd Steel</strong>, Platform Team</p>
+<p><a href="mailto:@eddsteel">@eddsteel</a></p>
+</section>
+<section>
+<section id="slide-sec-1">
+<h2 id="sec-1">Demos!</h2>
+<aside class="notes">
+<p>
+Key theme: I often run ls to remember what I'm doing
+</p>
+
+</aside>
+</section>
+<section id="slide-sec-1-1">
+<h3 id="sec-1-1"><code>ls</code> and <code>sl</code></h3>
+<iframe src="http://localhost:3000/index.html" style="height: 90%; width: 100%;">
+</iframe>
+<aside class="notes">
+<ul class="org-ul">
+<li>show ls operation, ls -l, ls -ldh ~
+</li>
+<li>very useful
+</li>
+<li>often find myself typing it when I return to a task and need to know where I am/what I'm doing
+</li>
+<li>my goto 'what am i doing' tool
+</li>
+<li>sl has similar arguments to ls
+</li>
+<li>Difference is&#x2026; it shows a train
+</li>
+<li>Can't ctrl-c it
+</li>
+<li>Have to sit and watch and think about what you did
+</li>
+</ul>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-sec-2">
+<h2 id="sec-2">Why did I just type <code>sl</code> instead of <code>ls</code>?</h2>
+<ul>
+<li>You forgot that <code>l</code> isn't <code>s</code></li>
+<li>You don't know where the keys are and you took a guess</li>
+<li>You tried to do it too fast</li>
+<li>You're not paying attention</li>
+<li>You're trying to do too much at once</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-sec-3">
+<h2 id="sec-3">Cognitive Science</h2>
+<p>
+Hard field, easy fundamentals
+</p>
+<aside class="notes">
+<p>
+key theme: - divided attention is no good for coding
+</p>
+
+</aside>
+<div style="color:white">
+<ul>
+<li>Attention is categorised</li>
+<li>Attention is limited</li>
+<li>One model: attention pools, for different domains</li>
+
+</ul>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-4">
+<h2 id="sec-4">Cognitive Science</h2>
+<p>
+Hard field, easy fundamentals
+</p>
+<ul>
+<li>Attention is categorised</li>
+<li>Attention is limited</li>
+<li>Multitasking is impossible</li>
+
+</ul>
+<aside class="notes">
+<p>
+Cognitive Science: how we think
+Attention is categorised &#x2013; different categories are suited to different purposes
+Attention is limited &#x2013; but it's not like a simple gauge that runs out
+behave like resource pools "sharded" by function.
+</p>
+
+</aside>
+</section>
+<section id="slide-sec-4-1">
+<h3 id="sec-4-1">Attention can be categorised</h3>
+
+<div class="figure">
+<p><img src="imgs/attention-I.png" alt="attention-I.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+Selective attention is deeply focused, when all your resources are used for one thing
+[Divided] attention necessary for multi-tasking* and dealing with more than one thing at once
+We're actually really bad at multi-tasking, and in a study those who rated themselves good at it did worse
+</p>
+
+</aside>
+</section>
+<section id="slide-sec-4-2">
+<h3 id="sec-4-2">Attention is limited, but can be shifted</h3>
+
+<div class="figure">
+<p><img src="imgs/attention-II.png" alt="attention-II.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+Circumstances often force us to divide our attention, but with effort we can shift it back.
+We can learn techniques to make this easier
+We should know when we have selective attention on the task at hand.
+</p>
+
+</aside>
+</section>
+<section id="slide-sec-4-3">
+<h3 id="sec-4-3">Multi-tasking is impossible</h3>
+<ul>
+<li>We have attention pools</li>
+<li>They shard by brain function</li>
+<li>Experts need less from that pool</li>
+<li>No one can multitask</li>
+
+</ul>
+<aside class="notes">
+<p>
+Attention as resource - we have finite attention pools sharded by function
+e.g.
+   hopping up and down doesn't affect your ability to remember the national anthem
+   talking on the phone does affect your ability to write a poem
+we can only do two things at once if we're really good at one of them
+We are expert typers
+This is why you can generally type without paying attention, but you can't code without paying attention
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-sec-5">
+<h2 id="sec-5">What is this?</h2>
+
+<div class="figure">
+<p><img src="imgs/magnetic-breaker.jpg" alt="magnetic-breaker.jpg" />
+</p>
+</div>
+</section>
+<section id="slide-sec-5-1">
+<h3 id="sec-5-1">Electrical circuit breakers</h3>
+<p>
+When current crosses a threshold, the circuit is broken and current goes to 0.
+</p>
+</section>
+<section id="slide-sec-5-2">
+<h3 id="sec-5-2">Software circuit breakers</h3>
+
+<div class="figure">
+<p><img src="imgs/circuit-breaker.png" alt="circuit-breaker.png" />
+</p>
+</div>
+<aside class="notes">
+<p>
+When (e.g.) a remote system is responding slowly this layer fails fast, and recovers slowly
+So that overall system timing doesn't grow to the timeout time.
+We use this technique in our services and in communicating with new services from dashboard (in conjunction with DL)
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-sec-6">
+<h2 id="sec-6">In general terms</h2>
+<blockquote nil>
+<p>
+A circuit breaker turns a sub-optimal situation into a broken one, demanding intervention
+</p>
+</blockquote>
+</section>
+</section>
+<section>
+<section id="slide-sec-7">
+<h2 id="sec-7">sl is a circuit breaker for divided attention</h2>
+<p>
+<code>sl</code> shows you when your attention is so depleted you can't even <code>ls</code> any more.
+</p>
+<aside class="notes">
+<p>
+And when it is time to stop what you are doing and go get a coffee.
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-sec-8">
+<h2 id="sec-8">How it works</h2>
+<div class="thought-bubble see-through">
+<ul>
+<li>&#x2026;</li>
+
+</ul>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-9">
+<h2 id="sec-9">How it works</h2>
+<div class="thought-bubble">
+<ul>
+<li>I have that meeting in 5 minutes</li>
+
+</ul>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-10">
+<h2 id="sec-10">How it works</h2>
+<div class="thought-bubble">
+<ul>
+<li>I have that meeting in 5 minutes</li>
+<li>PLAT-327: I'll start on the model first</li>
+
+</ul>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-11">
+<h2 id="sec-11">How it works</h2>
+<div class="thought-bubble">
+<ul>
+<li>I have that meeting in 5 minutes</li>
+<li>PLAT-327: I'll start on the model first</li>
+<li>I should check why that load is so high</li>
+
+</ul>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-12">
+<h2 id="sec-12">How it works</h2>
+<div class="thought-bubble">
+<ul>
+<li>I have that meeting in 5 minutes</li>
+<li>PLAT-327: I'll start on the model first</li>
+<li>I should check why that load is so high</li>
+<li>Ha, Luke got another haircut</li>
+
+</ul>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-13">
+<h2 id="sec-13">How it works</h2>
+<div class="thought-bubble">
+<ul>
+<li>I have that meeting in 5 minutes</li>
+<li>PLAT-327: I'll start on the model first</li>
+<li>I should check why that load is so high</li>
+<li>Ha, Luke got another haircut</li>
+<li>what was I doing?</li>
+
+</ul>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-14">
+<h2 id="sec-14">How it works</h2>
+<div class="thought-bubble">
+<ul>
+<li>I have that meeting in 5 minutes</li>
+<li>PLAT-327: I'll start on the model first</li>
+<li>I should check why that load is so high</li>
+<li>Ha, Luke got another haircut</li>
+<li>what was I doing?</li>
+
+</ul>
+</div>
+<div class="computer-bubble">
+<p>
+CHOO CHOO!
+</p>
+</div>
+
+<div class="figure">
+<p><img src="./imgs/work-at-hootsuite.gif" alt="work-at-hootsuite.gif" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-15">
+<h2 id="sec-15">Why is selective attention important?</h2>
+<ul>
+<li>Study shows..
+<ul>
+<li>In memory recognition task</li>
+<li>80% success sequential completion</li>
+<li>60% success with divided attention</li>
+
+</ul></li>
+<li>Anecdotally, we've all seen careless mistakes</li>
+
+</ul>
+</section>
+<section id="slide-sec-15-1">
+<h3 id="sec-15-1">&#x2026;.But I wouldn't recommend it for ops</h3>
+<ul>
+<li>You forgot that <code>l</code> isn't <code>s</code></li>
+<li>You don't know where the keys are and you took a guess</li>
+<li>You tried to do it too fast</li>
+<li>You're not paying attention</li>
+<li>You're trying to do too much at once</li>
+<li><b>The server has died and you are the first responder</b></li>
+
+</ul>
+</section>
+<section id="slide-sec-15-2">
+<h3 id="sec-15-2">I'm sold!</h3>
+<ul>
+<li><code>brew install sl</code></li>
+<li><code>brew install gti</code>
+<ul>
+<li>(if you <code>git status</code> to remember what you're doing)</li>
+
+</ul></li>
+<li>please don't install on servers</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-sec-16" class="title-slide">
+<h1 id="sec-16">Questions?</h1>
+<p>
+Thanks for shifting your selective attention!
+</p>
+</section>
+</section>
+</div>
+</div>
+
+<script src="../../reveal-hs/bower_components/reveal.js/lib/js/head.min.js"></script>
+<script src="../../reveal-hs/bower_components/reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: false,
+progress: false,
+history: false,
+center: true,
+slideNumber: true,
+rollingLinks: false,
+keyboard: true,
+overview: false,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: '../../reveal-hs/bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+]
+});
+</script>
+</body>
+</html>

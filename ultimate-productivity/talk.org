@@ -1,0 +1,252 @@
+#+Title: The Ultimate Productivity Tool
+#+Author: Edd Steel
+#+Email: @eddsteel
+#+REVEAL_ROOT: ../../reveal-hs/bower_components/reveal.js
+#+REVEAL_THEME: hootsuite
+#+REVEAL_TRANS: fade
+#+OPTIONS: num:nil toc:nil :-
+#+OPTIONS: reveal_control:nil reveal_progress:nil reveal_overview:nil reveal_title_slide:t
+#+REVEAL_EXTRA_CSS: ./override.css
+#+REVEAL_HEAD_PREAMBLE: <script src="http://localhost:3000/socket.io/socket.io.js"></script> <script src="http://localhost:3000/socket.io-stream.js"></script> <script src="http://localhost:3000/terminal.js"></script>
+#+REVEAL_PLUGINS: (highlight)
+#
+# Note: requires a running instance of https://github.com/Gottox/node-webterm
+#
+* Demos!
+ #+BEGIN_NOTES
+  Key theme: I often run ls to remember what I'm doing
+ #+END_NOTES
+** =ls= and =sl=
+#+REVEAL_HTML: <iframe src="http://localhost:3000/index.html" style="height: 90%; width: 100%;">
+#+REVEAL_HTML: </iframe>
+  #+BEGIN_NOTES
+   - show ls operation, ls -l, ls -ldh ~
+   - very useful
+   - often find myself typing it when I return to a task and need to know where I am/what I'm doing
+   - my goto 'what am i doing' tool
+   - sl has similar arguments to ls
+   - Difference is... it shows a train
+   - Can't ctrl-c it
+   - Have to sit and watch and think about what you did
+  #+END_NOTES
+* Why did I just type =sl= instead of =ls=?
+  -  You forgot that =l= isn't =s=
+  -  You don't know where the keys are and you took a guess
+  -  You tried to do it too fast
+  -  You're not paying attention
+  -  You're trying to do too much at once
+* Cognitive Science
+   Hard field, easy fundamentals
+  #+BEGIN_NOTES
+    key theme: - divided attention is no good for coding
+  #+END_NOTES
+#+REVEAL_HTML: <div style="color:white">
+   -  Attention is categorised
+   -  Attention is limited
+   -  One model: attention pools, for different domains
+#+REVEAL_HTML: </div>
+* Cognitive Science
+   Hard field, easy fundamentals
+   -  Attention is categorised
+   -  Attention is limited
+   -  Multitasking is impossible
+  #+BEGIN_NOTES
+    Cognitive Science: how we think
+    Attention is categorised -- different categories are suited to different purposes
+    Attention is limited -- but it's not like a simple gauge that runs out
+    behave like resource pools "sharded" by function.
+   #+END_NOTES
+** Attention can be categorised
+    #+BEGIN_SRC ditaa :file imgs/attention-I.png :cmdline -E
+                          +---------------+
+                          |               |
+                          |   Attention   |
+                          |               |
+                          +------+-+------+
+                                 | |
+                     /-----------/ \-----------\
+                     |                         |
+                     V                         V
+               +-----+-----+              +----+----+
+               | Selective |              + Divided |
+               +-----------+              +---------+
+               |  focused  |              |unfocused|
+               +-----------+              +---------+
+
+    #+END_SRC
+
+    #+RESULTS:
+    [[file:imgs/attention-I.png]]
+
+    #+BEGIN_NOTES
+    Selective attention is deeply focused, when all your resources are used for one thing
+    [Divided] attention necessary for multi-tasking* and dealing with more than one thing at once
+    We're actually really bad at multi-tasking, and in a study those who rated themselves good at it did worse
+    #+END_NOTES
+** Attention is limited, but can be shifted
+    #+BEGIN_SRC ditaa :file imgs/attention-II.png :cmdline -E
+
+                          +---------------+
+                          |               |
+                          |   Attention   |
+                          |               |
+                          +------+-+------+
+                                 | |
+                     /-----------/ \-----------\
+                     |                         |
+                     V                         V
+              +------+----+  attentional  +----+----+
+              | Selective +<-=----------->+ Divided |
+              +-----------+    shift      +---+++---+
+              | focused   |                   |||
+              +-----------+          /--------/|\-------\
+                                     |         |        |
+                                     V         V        v
+                                 +---+--+ +----+---+ +--+---+
+                                 |Task A| |Person B| |Task C|
+                                 +------+ +--------+ +------+
+
+    #+END_SRC
+
+    #+RESULTS:
+    [[file:imgs/attention-II.png]]
+
+    #+BEGIN_NOTES
+    Circumstances often force us to divide our attention, but with effort we can shift it back.
+    We can learn techniques to make this easier
+    We should know when we have selective attention on the task at hand.
+    #+END_NOTES
+** Multi-tasking is impossible
+   - We have attention pools
+   - They shard by brain function
+   - Experts need less from that pool
+   - No one can multitask
+   #+BEGIN_NOTES
+     Attention as resource - we have finite attention pools sharded by function
+     e.g.
+        hopping up and down doesn't affect your ability to remember the national anthem
+        talking on the phone does affect your ability to write a poem
+     we can only do two things at once if we're really good at one of them
+     We are expert typers
+     This is why you can generally type without paying attention, but you can't code without paying attention
+   #+END_NOTES
+* What is this?
+  file:imgs/magnetic-breaker.jpg
+** Electrical circuit breakers
+    When current crosses a threshold, the circuit is broken and current goes to 0.
+** Software circuit breakers
+
+    #+BEGIN_SRC dot :file imgs/circuit-breaker.png
+    digraph {
+      rankdir=LR
+      node [shape=circle, fontname=Helvetica, fontsize=18, fixedsize=true, width=1.5, style=filled]
+      edge [fontname=Helvetica, fontsize=14]
+
+      "closed" [fillcolor="#ccffcc", color="#00dd00"]
+      "open" [fillcolor="#ffcccc", color="#dd0000"]
+      "half-open" [fillcolor="#ffffcc", color="#dddd00"]
+
+      "closed" -> "closed" [label=success, color="#00dd00"]
+      "closed" -> "open" [label=failure, color="#dd0000"]
+      "open" -> "open" [label="fail-fast", color="#dd0000"]
+      "open" -> "half-open" [label=timeout, color="#dddd00"]
+      "half-open" -> "open" [label=trip, color="#dd0000"]
+      "half-open" -> "closed" [label=reset, color="#00dd00"]
+
+      edge [dir=none]
+      {rank=same "Akka Circuit-breaker Pattern" "open"}
+      "Akka Circuit-breaker Pattern" [shape=plaintext,style=empty] -> "open" [constraint=false]
+    }
+    #+END_SRC
+
+    #+RESULTS:
+    [[file:imgs/circuit-breaker.png]]
+    #+BEGIN_NOTES
+    When (e.g.) a remote system is responding slowly this layer fails fast, and recovers slowly
+    So that overall system timing doesn't grow to the timeout time.
+    We use this technique in our services and in communicating with new services from dashboard (in conjunction with DL)
+    #+END_NOTES
+* In general terms
+   #+BEGIN_QUOTE
+    A circuit breaker turns a sub-optimal situation into a broken one, demanding intervention
+   #+END_QUOTE
+* sl is a circuit breaker for divided attention
+     =sl= shows you when your attention is so depleted you can't even =ls= any more.
+   #+BEGIN_NOTES
+     And when it is time to stop what you are doing and go get a coffee.
+   #+END_NOTES
+* How it works
+#+REVEAL_HTML: <div class="thought-bubble see-through">
+- ...
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
+* How it works
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
+* How it works
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+- PLAT-327: I'll start on the model first
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
+* How it works
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+- PLAT-327: I'll start on the model first
+- I should check why that load is so high
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
+* How it works
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+- PLAT-327: I'll start on the model first
+- I should check why that load is so high
+- Ha, Luke got another haircut
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
+* How it works
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+- PLAT-327: I'll start on the model first
+- I should check why that load is so high
+- Ha, Luke got another haircut
+- what was I doing?
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
+* How it works
+#+REVEAL_HTML: <div class="thought-bubble">
+- I have that meeting in 5 minutes
+- PLAT-327: I'll start on the model first
+- I should check why that load is so high
+- Ha, Luke got another haircut
+- what was I doing?
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="computer-bubble">
+CHOO CHOO!
+#+REVEAL_HTML: </div>
+    file:./imgs/work-at-hootsuite.gif
+* Why is selective attention important?
+        -  Study shows..
+          - In memory recognition task
+          - 80% success sequential completion
+          - 60% success with divided attention
+        -  Anecdotally, we've all seen careless mistakes
+** ....But I wouldn't recommend it for ops
+  -  You forgot that =l= isn't =s=
+  -  You don't know where the keys are and you took a guess
+  -  You tried to do it too fast
+  -  You're not paying attention
+  -  You're trying to do too much at once
+  -  *The server has died and you are the first responder*
+** I'm sold!
+  - =brew install sl=
+  - =brew install gti=
+    - (if you =git status= to remember what you're doing)
+  - please don't install on servers
+* Questions?
+   :PROPERTIES:
+   :reveal_extra_attr: class="title-slide"
+   :END:
+  Thanks for shifting your selective attention!

@@ -1,0 +1,64 @@
+/* Have to bring in these because ox-reveal only supports one custom css file */
+
+@import url('../../reveal-hs/css/theme/hootsuite.css');
+@import url('../../reveal-hs/css/style.css');
+@import url('../../reveal-hs/bower_components/reveal.js/lib/css/zenburn.css');
+
+img {
+    display: block;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.thought-bubble {
+    position: absolute;
+    size: 1.3em;
+    top: 150px;
+    right: 30%;
+    width: 30%;
+}
+
+.thought-bubble ul {
+    margin: 0;
+    padding: 0;
+}
+
+.thought-bubble li {
+    position: relative;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    border: black 1px solid !important;
+    margin-top: -50px;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.computer-bubble {
+    position: absolute;
+    size: 5em;
+    font-weight: bolder;
+    bottom: 150px;
+    width: 30%;
+    right: 20%;
+    color: red;
+    background-color: white;
+    border: red 4px solid !important;
+    border-radius: 10px;
+    text-align:center;
+    padding: 10px;
+}
+
+iframe {
+    min-height: 712px;
+    height: 100%;
+    width: 100%;
+}
+
+.see-through li {
+    color: rgba(0,0,0,0) !important;
+    background-color: rgba(0,0,0,0) !important;
+    border-color: rgba(0,0,0,0) !important;
+}
